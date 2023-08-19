@@ -1,11 +1,13 @@
 import $ from "jquery";
+import { DataConstant } from "../../Utils/DataConstant";
+import { ContextWebInformation } from "../../ViewModels/ContextWebInformation";
 import { TestViewModel } from "../../ViewModels/TestViewModel";
+import { QueryOption } from "./QueryOption";
 
 const headerGeneral = {
-    'Content-Type': 'application/json',
+    'Content-Type': 'application/json;odata=verbose',
     "Accept": "application/json"
 }
-
 
 export class ApiBase {
     static BASE_URI = process.env.REACT_APP_BASE_URL || "";
@@ -34,16 +36,29 @@ export class ApiBase {
 
     static async post<T>(url: string, body: object): Promise<[Error | undefined, T | undefined]> {
         try {
+            let postHeader: any = { ...headerGeneral };
+
+            if (url.endsWith("/_api/contextinfo") == false) {
+                let [err, webContext] = await this.get_WebContextInfo();
+                if (err != undefined || webContext == null)
+                    throw new Error("Không thể lấy thông tin website");
+
+                postHeader["X-RequestDigest"] = webContext.FormDigestValue;
+            }
+
             let result = await $.ajax(
                 {
                     url: url,
                     type: "POST",
                     contentType: "application/json;odata=verbose",
                     data: JSON.stringify(body),
-                    headers: headerGeneral
+                    headers: postHeader
                 });
 
-            return [undefined, result.value as any as T]
+            if (result.value != null)
+                return [undefined, result.value as any as T]
+            else
+                return [undefined, result as any as T]
         } catch (ex) {
             if (ex instanceof Error)
                 return [new Error(ex.message), undefined];
@@ -71,31 +86,40 @@ export class ApiBase {
         }
     }
 
-    static getItemById<T>(url: string, listTitle: string, select: string, expand: string, id: string): Promise<[Error | undefined, T | undefined]> {
+    static async get_WebContextInfo(): Promise<[Error | undefined, ContextWebInformation | undefined]> {
+        let m_Url = ApiBase.BASE_URI + "/_api/contextinfo";
+        return ApiBase.post<ContextWebInformation>(m_Url, {});
+    }
+
+    static getItemById<T>(url: string, listTitle: string, id: string, queryOption: QueryOption): Promise<[Error | undefined, T | undefined]> {
         var m_Url = url + "/_api/web/lists/getByTitle('" + listTitle + "')/items(" + id + ")/";
-        m_Url += "?$select=" + select;
-        m_Url += expand != "" ? "&$expand=" + expand : "";
+        m_Url += "?$select=" + queryOption.select;
+        m_Url += queryOption.expand != "" ? "&$expand=" + queryOption.expand : "";
         return ApiBase.get<T>(m_Url);
     }
 
-    static async getItems<T>(url: string, listTitle: string, select: string, expand: string, filter: string, order: string): Promise<[Error | undefined, T | undefined]> {
+    static async getItems<T>(url: string, listTitle: string, queryOption: QueryOption): Promise<[Error | undefined, T | undefined]> {
+        if(queryOption.page == null) queryOption.page = 0;
+        if(queryOption.size == null) queryOption.size = DataConstant.PAGE_SIZE;
+
         var m_Url = url + "/_api/web/lists/getByTitle('" + listTitle + "')/items/";
-        m_Url += "?$select=" + select;
-        m_Url += expand != "" ? "&$expand=" + expand : "";
-        m_Url += filter != "" ? "&$filter=" + filter : "";
-        m_Url += order != "" ? "&$orderby=" + order : "";
-        m_Url += "&$top=99999";
+        m_Url += "?$select=" + (queryOption.select || "");
+        m_Url += (queryOption.expand || "") != "" ? "&$expand=" + queryOption.expand : "";
+        m_Url += (queryOption.filter || "") != "" ? "&$filter=" + queryOption.filter : "";
+        m_Url += "&$orderby=ID";
+        m_Url += "&$skiptoken=Paged%3dTRUE%26p_ID%3d" + (queryOption.page * queryOption.size)
+        m_Url += "&$top=" +2;
 
         let result = await ApiBase.get<T>(m_Url);
         return result;
     }
 
-    static getItemsNoAsync<T>(url: string, listTitle: string, select: string, expand: string, filter: string, order: string): Promise<[Error | undefined, T | undefined]> {
+    static getItemsNoAsync<T>(url: string, listTitle: string, queryOption: QueryOption): Promise<[Error | undefined, T | undefined]> {
         var m_Url = url + "/_api/web/lists/getByTitle('" + listTitle + "')/items/";
-        m_Url += "?$select=" + select;
-        m_Url += expand != "" ? "&$expand=" + expand : "";
-        m_Url += filter != "" ? "&$filter=" + filter : "";
-        m_Url += order != "" ? "&$orderby=" + order : "";
+        m_Url += "?$select=" + queryOption.select;
+        m_Url += queryOption.expand != "" ? "&$expand=" + queryOption.expand : "";
+        m_Url += queryOption.filter != "" ? "&$filter=" + queryOption.filter : "";
+        m_Url += queryOption.order != "" ? "&$orderby=" + queryOption.order : "";
         m_Url += "&$top=99999";
         return ApiBase.get<T>(m_Url);
     }

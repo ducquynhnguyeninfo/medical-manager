@@ -4,7 +4,7 @@ import { RouterProvider, Routes, createBrowserRouter } from "react-router-dom";
 import { SnackbarProvider } from 'notistack';
 import { routers2 } from '../../Libs/Routers/Routes';
 import "./App.css";
-
+import '../../i18n/config';
 const router = createBrowserRouter([
 	{ path: "*", Component: Root }
 ])

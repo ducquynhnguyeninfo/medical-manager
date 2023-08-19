@@ -3,19 +3,21 @@ import { createTheme, StyledEngineProvider, ThemeProvider } from "@mui/material/
 import { observer } from "mobx-react-lite";
 import * as React from "react";
 import { AppBar, Header } from "../HeaderComponent/Index";
+import { Linear } from "../Linear/Index";
 import { MainListItems, SliderMenu } from "../SliderMenu/MainListItems"
 const defaultTheme = createTheme();
 type Props = {
     children?: React.ReactNode
 };
 
-const DefaultLayout: React.FC<Props> = observer((props) => {
+const DefaultLayout: React.FC<Props> = (props) => {
     return (<ThemeProvider theme={defaultTheme}>
         <StyledEngineProvider injectFirst>
             <Box sx={{ display: 'flex' }}>
                 <CssBaseline />
                 <Header></Header>
                 <SliderMenu></SliderMenu>
+                <Linear top={"65px"}/>
                 <Box
                     component="main"
                     sx={{
@@ -35,6 +37,6 @@ const DefaultLayout: React.FC<Props> = observer((props) => {
             </Box>
         </StyledEngineProvider>
     </ThemeProvider>);
-})
+}
 
 export default DefaultLayout;
