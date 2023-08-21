@@ -16,8 +16,8 @@ const DefaultLayout: React.FC<Props> = (props) => {
             <Box sx={{ display: 'flex' }}>
                 <CssBaseline />
                 <Header></Header>
+                <Linear top={"65px"} />
                 <SliderMenu></SliderMenu>
-                <Linear top={"65px"}/>
                 <Box
                     component="main"
                     sx={{

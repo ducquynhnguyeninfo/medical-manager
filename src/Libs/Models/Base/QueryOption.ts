@@ -1,7 +1,7 @@
 import { DataConstant } from "../../Utils/DataConstant";
 
 export class QueryOption {
-    select?: string = "Title";
+    select?: string = "ID,Title";
     expand?: string = "";
     filter?: string = "";
     order?: string = "";

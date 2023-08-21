@@ -1,20 +1,17 @@
 import { MedicineDefinition } from "../ViewModels/MedicineDefinitionViewModel";
+import { PagedData } from "../ViewModels/PagedData";
 import { TestViewModel } from "../ViewModels/TestViewModel";
 import { ApiBase } from "./Base/ApiBase";
 import { QueryOption } from "./Base/QueryOption";
 
 export default class MedicineDefinitionAPI {
-    static async getItems(queryOption?: QueryOption): Promise<MedicineDefinition[] | undefined> {
+    static async getItems(queryOption?: QueryOption): Promise<PagedData<MedicineDefinition>> {
         if (queryOption == null)
             queryOption = new QueryOption();
         if (queryOption.select === "")
             queryOption.select = "Title";
 
-        let [error, result] = await ApiBase.getItems<MedicineDefinition[]>(ApiBase.BASE_URI, "MedicineDefinition", queryOption);
-        if (error == null)
-            return result;
-        else
-            return undefined;
+        return await ApiBase.getItems<MedicineDefinition>(ApiBase.BASE_URI, "MedicineDefinition", queryOption);
     }
 
     static async AddItem(item: MedicineDefinition) {

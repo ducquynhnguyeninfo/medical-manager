@@ -1,6 +1,7 @@
 import $ from "jquery";
 import { DataConstant } from "../../Utils/DataConstant";
 import { ContextWebInformation } from "../../ViewModels/ContextWebInformation";
+import { PagedData } from "../../ViewModels/PagedData";
 import { TestViewModel } from "../../ViewModels/TestViewModel";
 import { QueryOption } from "./QueryOption";
 
@@ -91,6 +92,12 @@ export class ApiBase {
         return ApiBase.post<ContextWebInformation>(m_Url, {});
     }
 
+    static async Count(listTitle: string): Promise<number> {
+        var m_Url = ApiBase.BASE_URI + "/_api/web/lists/getByTitle('" + listTitle + "')/ItemCount";
+        let [error, count] = await ApiBase.get<any>(m_Url);
+        return count;
+    }
+
     static getItemById<T>(url: string, listTitle: string, id: string, queryOption: QueryOption): Promise<[Error | undefined, T | undefined]> {
         var m_Url = url + "/_api/web/lists/getByTitle('" + listTitle + "')/items(" + id + ")/";
         m_Url += "?$select=" + queryOption.select;
@@ -98,19 +105,30 @@ export class ApiBase {
         return ApiBase.get<T>(m_Url);
     }
 
-    static async getItems<T>(url: string, listTitle: string, queryOption: QueryOption): Promise<[Error | undefined, T | undefined]> {
-        if(queryOption.page == null) queryOption.page = 0;
-        if(queryOption.size == null) queryOption.size = DataConstant.PAGE_SIZE;
+    static async getItems<T>(url: string, listTitle: string, queryOption: QueryOption): Promise<PagedData<T>> {
+        if (queryOption.page == null) queryOption.page = 0;
+        if (queryOption.size == null) queryOption.size = DataConstant.PAGE_SIZE;
 
         var m_Url = url + "/_api/web/lists/getByTitle('" + listTitle + "')/items/";
         m_Url += "?$select=" + (queryOption.select || "");
         m_Url += (queryOption.expand || "") != "" ? "&$expand=" + queryOption.expand : "";
         m_Url += (queryOption.filter || "") != "" ? "&$filter=" + queryOption.filter : "";
         m_Url += "&$orderby=ID";
-        m_Url += "&$skiptoken=Paged%3dTRUE%26p_ID%3d" + (queryOption.page * queryOption.size)
-        m_Url += "&$top=" +2;
+        if (queryOption.page > 0)
+            m_Url += "&$skiptoken=Paged%3dTRUE%26p_ID%3d" + (queryOption.page * queryOption.size)
+        m_Url += "&$top=" + queryOption.size;
 
-        let result = await ApiBase.get<T>(m_Url);
+        let result = new PagedData<T>();
+        result.Page = queryOption.page;
+        result.Size = queryOption.size;
+
+        let [error, data] = await ApiBase.get<Array<T>>(m_Url);
+        if (error != undefined)
+            return result;
+
+        let total = await ApiBase.Count(listTitle);
+        result.Data = data;
+        result.Total = total;
         return result;
     }
 

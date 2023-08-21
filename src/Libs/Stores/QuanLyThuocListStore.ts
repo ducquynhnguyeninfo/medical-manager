@@ -3,9 +3,10 @@ import { makeAutoObservable, makeObservable, observable, action } from "mobx"
 import MedicineDefinitionAPI from "../Models/MedicineDefinitionAPI";
 import { MedicineDefinition } from "../ViewModels/MedicineDefinitionViewModel";
 import { MedicineUnitDefinition } from "../ViewModels/MedicineUnitDefinition";
+import { PagedData } from "../ViewModels/PagedData";
 
 class DanhSachThuocStore {
-    medicineData: Array<MedicineDefinition>;
+    medicineData: PagedData<MedicineDefinition>;
     medicineUnitDefinitions: Array<MedicineUnitDefinition>;
 
     constructor(private store: Store) {
@@ -13,19 +14,29 @@ class DanhSachThuocStore {
             medicineData: observable,
             medicineUnitDefinitions: observable,
             loadMedicineList: action,
-            getTenMaThuoc: action
+            getTenMaThuoc: action,
+            set_medicineData: action,
+            set_medicineUnitDefinitions: action
         });
 
-        this.medicineData = [];
+        this.medicineData = new PagedData();
         this.medicineUnitDefinitions = [];
     }
 
-    loadMedicineList() {
+    loadMedicineList(page: number, size: number) {
         this.store.sLinear.set_isShow(true);
-        MedicineDefinitionAPI.getItems({ select: "Title,Code,Unit,Description" }).then(result => {
+        MedicineDefinitionAPI.getItems({ select: "ID,Title,Code,Unit,Description", page: page, size: size }).then(result => {
             this.store.sLinear.set_isShow(false);
-            this.medicineData = result || [];
+            this.set_medicineData(result || []);
         })
+    }
+
+    set_medicineData(data: PagedData<MedicineDefinition>) {
+        this.medicineData = data;
+    }
+
+    set_medicineUnitDefinitions(data: Array<MedicineUnitDefinition>) {
+        this.medicineUnitDefinitions = data;
     }
 
     getTenMaThuoc(code: string): string {

@@ -13,10 +13,10 @@ export class Store extends AuthorizedStore {
 
         makeObservable(this, {
             userContext: observable,
-            sHeader: observable,
-            sDanhSachThuoc: observable,
-            sRequiredAuth: observable,
-            sLinear: observable,
+            // sHeader: observable,
+            // sDanhSachThuoc: observable,
+            // sRequiredAuth: observable,
+            // sLinear: observable,
             set_userContext: action
         })
 

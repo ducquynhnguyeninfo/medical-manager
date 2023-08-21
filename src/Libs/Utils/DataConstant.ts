@@ -1,3 +1,3 @@
 export class DataConstant {
-    static PAGE_SIZE = 20;
+    static PAGE_SIZE = 10;
 }

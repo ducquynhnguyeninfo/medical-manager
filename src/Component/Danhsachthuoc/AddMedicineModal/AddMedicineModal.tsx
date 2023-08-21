@@ -1,4 +1,4 @@
-import { Alert, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, FormControl, Grid, InputLabel, MenuItem, Select, TextField } from "@mui/material";
+import { Alert, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, FormControl, Grid, InputLabel, MenuItem, TextField } from "@mui/material";
 import { observer } from "mobx-react-lite";
 import { FC, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -7,13 +7,13 @@ import MedicineDefinitionAPI from "../../../Libs/Models/MedicineDefinitionAPI";
 import { useStore } from "../../../Libs/Stores";
 import { MedicineDefinition } from "../../../Libs/ViewModels/MedicineDefinitionViewModel";
 import { MedicineUnitDefinition } from "../../../Libs/ViewModels/MedicineUnitDefinition";
+import Select, { SelectChangeEvent } from '@mui/material/Select';
 
 export const AddMedicineModal: FC<{ open: boolean, medicineUnitList: MedicineUnitDefinition[], setOpen: (isOpen: boolean) => void }> = observer(props => {
     const { t } = useTranslation();
     const { sDanhSachThuoc, sLinear } = useStore();
     const [medicineItem, setMedicineItem] = useState<MedicineDefinition>(new MedicineDefinition());
     const [modalMessage, setModalMessage] = useState<string | null>(null);
-
 
     useEffect(() => {
         if (props.medicineUnitList.length > 0 && props.open)
@@ -38,7 +38,7 @@ export const AddMedicineModal: FC<{ open: boolean, medicineUnitList: MedicineUni
                     icon: 'success',
                     confirmButtonText: t("Xác nhận")
                 });
-                sDanhSachThuoc.loadMedicineList();
+                sDanhSachThuoc.loadMedicineList(0, sDanhSachThuoc.medicineData.Size);
             }
         })
     }
@@ -58,7 +58,7 @@ export const AddMedicineModal: FC<{ open: boolean, medicineUnitList: MedicineUni
                         label={t("Tên thuốc")}
                         type="text"
                         fullWidth
-                        value={medicineItem.Title}
+                        value={medicineItem.Title || ""}
                         variant="standard"
                         onChange={(event) => {
                             setMedicineItem({ ...medicineItem, Title: event.target.value })
@@ -74,7 +74,7 @@ export const AddMedicineModal: FC<{ open: boolean, medicineUnitList: MedicineUni
                         type="text"
                         fullWidth
                         variant="standard"
-                        value={medicineItem.Code}
+                        value={medicineItem.Code || ""}
                         onChange={(event) => {
                             setMedicineItem({ ...medicineItem, Code: event.target.value })
                         }}
@@ -89,7 +89,7 @@ export const AddMedicineModal: FC<{ open: boolean, medicineUnitList: MedicineUni
                         type="text"
                         fullWidth
                         variant="standard"
-                        value={medicineItem.Description}
+                        value={medicineItem.Description || ""}
                         onChange={(event) => {
                             setMedicineItem({ ...medicineItem, Description: event.target.value })
                         }}
@@ -97,17 +97,18 @@ export const AddMedicineModal: FC<{ open: boolean, medicineUnitList: MedicineUni
                 </Grid>
                 <Grid item xs={12}>
                     <FormControl variant="standard" fullWidth style={{ marginTop: "16px" }}>
-                        <InputLabel size="small">{t("Đơn vị tính")}</InputLabel>
+                        <InputLabel size="small" id="UnitControl">{t("Đơn vị tính")}</InputLabel>
                         <Select
-                            labelId="demo-simple-select-standard-label"
-                            id="demo-simple-select-standard"
-                            value={medicineItem?.Code}
-                            onChange={(event) => setMedicineItem({ ...medicineItem, Unit: event.target.value })}
+                            labelId="UnitControl"
+                            value={medicineItem.Unit || props.medicineUnitList[0]?.Code}
+                            onChange={(event: SelectChangeEvent) => {
+                                setMedicineItem({ ...medicineItem, Unit: event.target.value || ""})
+                            }}
                             size="medium"
                             label={t("Đơn vị tính")}
                         >
                             {props.medicineUnitList.map(item => {
-                                return (<MenuItem value={item.Code}>{item.Title}</MenuItem>)
+                                return (<MenuItem key={item.ID} value={item.Code}>{item.Title}</MenuItem>)
                             })}
                         </Select>
                     </FormControl>
