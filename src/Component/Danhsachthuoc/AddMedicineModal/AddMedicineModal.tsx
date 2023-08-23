@@ -5,20 +5,29 @@ import { useTranslation } from "react-i18next";
 import Swal from "sweetalert2";
 import MedicineDefinitionAPI from "../../../Libs/Models/MedicineDefinitionAPI";
 import { useStore } from "../../../Libs/Stores";
-import { MedicineDefinition } from "../../../Libs/ViewModels/MedicineDefinitionViewModel";
+import { MedicineDefinitionViewModel } from "../../../Libs/ViewModels/MedicineDefinitionViewModel";
 import { MedicineUnitDefinition } from "../../../Libs/ViewModels/MedicineUnitDefinition";
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 
-export const AddMedicineModal: FC<{ open: boolean, medicineUnitList: MedicineUnitDefinition[], setOpen: (isOpen: boolean) => void }> = observer(props => {
+export const AddMedicineModal: FC<{
+    open: boolean, medicineUnitList: MedicineUnitDefinition[], setOpen: (isOpen: boolean) => void,
+    medicineSelected: MedicineDefinitionViewModel
+}> = observer(props => {
     const { t } = useTranslation();
     const { sDanhSachThuoc, sLinear } = useStore();
-    const [medicineItem, setMedicineItem] = useState<MedicineDefinition>(new MedicineDefinition());
+    const [medicineItem, setMedicineItem] = useState<MedicineDefinitionViewModel>(new MedicineDefinitionViewModel());
     const [modalMessage, setModalMessage] = useState<string | null>(null);
 
     useEffect(() => {
-        if (props.medicineUnitList.length > 0 && props.open)
-            setMedicineItem({ ...medicineItem, Unit: props.medicineUnitList[0]?.Code })
-    }, [props.open, props.medicineUnitList])
+        if (props.open == true) {
+            //copy selected data
+            setMedicineItem({ ...props.medicineSelected })
+        }
+        else {
+            console.log(medicineItem)
+            setMedicineItem(new MedicineDefinitionViewModel());
+        }
+    }, [props.open, props.medicineSelected])
 
     const handleClose = () => {
         props.setOpen(false);
@@ -26,21 +35,46 @@ export const AddMedicineModal: FC<{ open: boolean, medicineUnitList: MedicineUni
 
     const handleAdd = () => {
         sLinear.set_isShow(true);
-        MedicineDefinitionAPI.AddItem(medicineItem).then(result => {
-            sLinear.set_isShow(false);
-            if (result instanceof Error) {
-                setModalMessage(result.message);
-            } else {
-                props.setOpen(false);
-                Swal.fire({
-                    title: t('Thành công'),
-                    text: t("Đã thêm thành công"),
-                    icon: 'success',
-                    confirmButtonText: t("Xác nhận")
-                });
-                sDanhSachThuoc.loadMedicineList(0, sDanhSachThuoc.medicineData.Size);
-            }
-        })
+        if (medicineItem.ID == 0) {
+            MedicineDefinitionAPI.AddItem(medicineItem).then(result => {
+                sLinear.set_isShow(false);
+                if (result instanceof Error) {
+                    setModalMessage(result.message);
+                } else {
+                    props.setOpen(false);
+                    Swal.fire({
+                        title: t('Thành công'),
+                        text: t("Đã thêm thành công"),
+                        icon: 'success',
+                        confirmButtonText: t("Xác nhận")
+                    });
+                    sDanhSachThuoc.loadMedicineList(0, sDanhSachThuoc.medicineData.Size);
+                }
+            })
+        } else {
+            sLinear.set_isShow(true);
+            sDanhSachThuoc.editItem(medicineItem).then(result => {
+                sLinear.set_isShow(false);
+                if (result instanceof Error) {
+                    Swal.fire({
+                        title: t('Lỗi'),
+                        text: t(result.message),
+                        icon: 'error',
+                        confirmButtonText: t("Xác nhận")
+                    });
+                } else {
+                    sDanhSachThuoc.loadMedicineList(0, sDanhSachThuoc.medicineData.Size);
+                    props.setOpen(false);
+                    Swal.fire({
+                        title: t('Thành công'),
+                        text: t("Cập nhật thành công"),
+                        icon: 'success',
+                        confirmButtonText: t("Xác nhận")
+                    });
+                }
+            })
+        }
+
     }
 
     return (<Dialog open={props.open} maxWidth="sm" fullWidth onClose={handleClose}>
@@ -102,7 +136,8 @@ export const AddMedicineModal: FC<{ open: boolean, medicineUnitList: MedicineUni
                             labelId="UnitControl"
                             value={medicineItem.Unit || props.medicineUnitList[0]?.Code}
                             onChange={(event: SelectChangeEvent) => {
-                                setMedicineItem({ ...medicineItem, Unit: event.target.value || ""})
+                                console.log(event)
+                                setMedicineItem({ ...medicineItem, Unit: event.target.value || "" })
                             }}
                             size="medium"
                             label={t("Đơn vị tính")}
@@ -118,7 +153,7 @@ export const AddMedicineModal: FC<{ open: boolean, medicineUnitList: MedicineUni
         </DialogContent>
         <DialogActions>
             <Button disabled={sLinear.isShow} onClick={handleClose}>{t("Hủy")}</Button>
-            <Button disabled={sLinear.isShow} onClick={handleAdd}>{t("Thêm")}</Button>
+            <Button disabled={sLinear.isShow} onClick={handleAdd}>{medicineItem.ID == 0 ? t("Thêm") : t("Cập nhật")}</Button>
         </DialogActions>
     </Dialog>);
 });

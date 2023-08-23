@@ -53,7 +53,7 @@ export const MainListItems: React.FC<{}> = observer(() => {
       <ListItemButton>
         <ListItemIcon>
         </ListItemIcon>
-        <ListItemText primary="Nhập thuốc" onClick={() => redirect(routeConfig.test.pattern)} />
+        <ListItemText primary="Quản lý kho thuốc" onClick={() => redirect(routeConfig.NhapXuatThuoc.pattern)} />
       </ListItemButton>
       <ListItemButton>
         <ListItemIcon>

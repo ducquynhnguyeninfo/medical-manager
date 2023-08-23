@@ -1,8 +1,7 @@
 import { Moment } from "moment";
 import { BaseEntitySharePointItem } from "./BaseEntitySharePointItem";
-import { makeObservable, observable, action } from "mobx"
 
-export class MedicineDefinition extends BaseEntitySharePointItem {
+export class MedicineDefinitionViewModel extends BaseEntitySharePointItem {
     Title: string | undefined;
     Code: string | undefined;
     Unit: string | undefined;
@@ -24,5 +23,20 @@ export class MedicineDefinition extends BaseEntitySharePointItem {
         //     CreatedAt: observable,
         //     Description: observable
         // });
+    }
+
+    static toJS(item: MedicineDefinitionViewModel) {
+        return {
+            Title: item.Title,
+            Code: item.Code,
+            Unit: item.Unit,
+            Description: item.Description,
+            CreatedBy: item.CreatedBy,
+            CreatedAt: item.CreatedAt,
+            "odata.etag": item["odata.etag"],
+            __metadata: {
+                "type": "SP.Data.MedicineDefinitionListItem"
+            }
+        }
     }
 }

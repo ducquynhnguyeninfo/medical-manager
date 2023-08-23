@@ -1,6 +1,6 @@
 import { Store } from "./Store";
 import { makeObservable, observable, action } from "mobx"
-import { BASE_PATH, routeConfig } from "../Routers/Routes";
+import { routeConfig } from "../Routers/Routes";
 
 export class RequiredAuthStore {
     redirectPath: string;

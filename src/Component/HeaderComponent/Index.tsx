@@ -1,6 +1,6 @@
 import { styled } from "@mui/material/styles";
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
-import { FC, useEffect } from "react";
+import { FC } from "react";
 import { Badge, IconButton, Toolbar, Typography } from "@mui/material";
 import { DRAWER_WIDTH } from "../../Libs/Constants";
 import { useStore } from "../../Libs/Stores";

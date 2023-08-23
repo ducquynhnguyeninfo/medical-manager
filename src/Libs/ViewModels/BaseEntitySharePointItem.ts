@@ -3,5 +3,6 @@ export class BaseEntitySharePointItem {
     "odata.type": string = "";
     "odata.id": string = "";
     "odata.editLink": string = "";
-    ID: number | undefined;
+    "odata.etag": string = "";
+    ID: number  = 0;
 }
