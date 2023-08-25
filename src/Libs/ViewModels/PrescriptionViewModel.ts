@@ -1,13 +1,13 @@
 import { BaseEntitySharePointItem } from "./BaseEntitySharePointItem";
 
-export class Prescription extends BaseEntitySharePointItem {
+export class PrescriptionViewModel extends BaseEntitySharePointItem {
     Stt: number = 0;
     AppointmentID : number = 0;
     AppointmentTitle : number = 0;
     MedicineID : number = 0;
-    MedicineCode : string | null = null;
-    MedicineTitle: string | null = null;
-    MedicineUnit: string | null = null;
+    MedicineCode : string | undefined = undefined;
+    MedicineTitle: string | undefined = undefined;
+    MedicineUnit: string | undefined = undefined;
     Quantity: number = 0;
-    Created: Date | null = null;
+    Created: Date | undefined = undefined;
 }

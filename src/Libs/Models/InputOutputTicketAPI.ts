@@ -9,7 +9,7 @@ export default class InputOutputTicketAPI {
     static async getItems(queryOption: QueryOption<InputOutputTicketViewModel>): Promise<PagedData<InputOutputTicketViewModel>> {
         if (queryOption.select === "")
             queryOption.select = "Title"
-        if(queryOption.order === undefined)
+        if (queryOption.order === undefined)
             queryOption.order = "Created desc";
         let data = await ApiBase.getItems(ApiBase.BASE_URI, InputOutputTicketAPI.LIST_NAME, queryOption);
         data = plainToClass(PagedData<InputOutputTicketViewModel>, data);
@@ -17,19 +17,28 @@ export default class InputOutputTicketAPI {
         return data;
     }
 
-    // static async AddItem(item: MedicineDefinition) {
-    //     let [error,] = await ApiBase.addItem(ApiBase.BASE_URI, "MedicineDefinition", item);
-    //     if (error)
-    //         return error;
-    //     else return null;
+    static async AddItem(item: InputOutputTicketViewModel) {
+        let [error, data] = await ApiBase.addItem<InputOutputTicketViewModel>(ApiBase.BASE_URI, InputOutputTicketAPI.LIST_NAME, item);
+        if (error)
+            return error;
+        else return data;
 
-    // }
+    }
 
-    // static async DeleteItem(item: MedicineDefinition) {
-    //     let [error,] = await ApiBase.deleteItem(ApiBase.BASE_URI, "MedicineDefinition", item);
-    //     if (error)
-    //         return error;
-    //     else return null;
+    static async GetItemByID(itemID: string, queryOption: QueryOption<InputOutputTicketViewModel>) : Promise<InputOutputTicketViewModel | null> {
+        let [error, data] = await ApiBase.getItemById<InputOutputTicketViewModel>(ApiBase.BASE_URI, InputOutputTicketAPI.LIST_NAME, itemID, queryOption);
+        if (error)
+            return null;
 
-    // }
+        data = plainToClass(InputOutputTicketViewModel, data);
+        return data;
+    }
+
+    static async UpdateItem(item: InputOutputTicketViewModel) {
+        let [error, data] = await ApiBase.updateItem<InputOutputTicketViewModel>(ApiBase.BASE_URI, InputOutputTicketAPI.LIST_NAME, item);
+        if (error)
+            return error;
+        else return data;
+
+    }
 }

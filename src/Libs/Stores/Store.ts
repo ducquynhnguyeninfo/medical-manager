@@ -6,6 +6,7 @@ import { UserContext } from "../Models/UserContext";
 import { LinearStore } from "./LinearStore";
 import DanhSachThuocStore from "./QuanLyThuocListStore";
 import { InputOutputMedicineStore } from "./InputOutputMedicineStore";
+import { ModalStore } from "./ModalStore";
 // import { routes, notFound } from "../Router/Routes";
 
 export class Store extends AuthorizedStore {
@@ -22,6 +23,7 @@ export class Store extends AuthorizedStore {
         this.sRequiredAuth = new RequiredAuthStore(this);
         this.sLinear = new LinearStore(this);
         this.sInputOutputMedicine = new InputOutputMedicineStore(this);
+        this.sModal = new ModalStore(this);
 
         UserContext.getCurrentUser().then(result => {
             this.set_userContext(result);
@@ -33,4 +35,5 @@ export class Store extends AuthorizedStore {
     sRequiredAuth : RequiredAuthStore;
     sLinear : LinearStore;
     sInputOutputMedicine: InputOutputMedicineStore;
+    sModal: ModalStore;
 }

@@ -136,7 +136,6 @@ export const AddMedicineModal: FC<{
                             labelId="UnitControl"
                             value={medicineItem.Unit || props.medicineUnitList[0]?.Code}
                             onChange={(event: SelectChangeEvent) => {
-                                console.log(event)
                                 setMedicineItem({ ...medicineItem, Unit: event.target.value || "" })
                             }}
                             size="medium"

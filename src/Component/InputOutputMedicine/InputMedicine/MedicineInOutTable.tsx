@@ -1,30 +1,38 @@
-import { Box, Tooltip, IconButton, Button, Dialog, DialogActions, DialogContent, DialogTitle, Stack, TextField, MenuItem } from "@mui/material";
+import { Box, Tooltip, IconButton, Button, Dialog, DialogActions, DialogContent, DialogTitle, Stack, TextField, } from "@mui/material";
 import MaterialReactTable, { MaterialReactTableProps, MRT_Row, MRT_ColumnDef } from "material-react-table";
 import { observer } from "mobx-react-lite";
-import { useState, useCallback, useMemo, FC } from "react";
-import { Prescription } from "../../../Libs/ViewModels/PrescriptionViewModel";
+import { useState, useCallback, useMemo, FC, ChangeEvent, SyntheticEvent, useEffect } from "react";
 import { faEdit, faRecycle } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { MedicineDefinitionViewModel } from "../../../Libs/ViewModels/MedicineDefinitionViewModel";
-export const MedicineInOutTable: FC<{}> = observer((props) => {
+import MedicineDefinitionAPI from "../../../Libs/Models/MedicineDefinitionAPI";
+import Autocomplete from '@mui/material/Autocomplete';
+import { DataConstant } from "../../../Libs/Utils/DataConstant";
+import { useTranslation } from "react-i18next";
+import { InputOutputTicketDetailViewModel } from "../../../Libs/ViewModels/InputOutputTicketDetailViewModel";
+
+export const MedicineInOutTable: FC<{ detailList: InputOutputTicketDetailViewModel[], onChange: (data: InputOutputTicketDetailViewModel[]) => void }> = observer((props) => {
     const [createModalOpen, setCreateModalOpen] = useState(false);
-    const [tableData, setTableData] = useState<Prescription[]>([]);
-    const [medicineFilter, setMedicineFilter] = useState<MedicineDefinitionViewModel[]>();
     const [validationErrors, setValidationErrors] = useState<{
         [cellId: string]: string;
     }>({});
+    const { t } = useTranslation();
 
-    const handleCreateNewRow = (values: Prescription) => {
-        tableData.push(values);
-        setTableData([...tableData]);
+    const handleCreateNewRow = (values: InputOutputTicketDetailViewModel) => {
+        props.detailList.push(values);
+        let i = 1;
+        props.detailList.forEach(e => {
+            e.Stt = i++;
+        });
+        props.onChange(props.detailList);
     };
 
-    const handleSaveRowEdits: MaterialReactTableProps<Prescription>['onEditingRowSave'] =
+    const handleSaveRowEdits: MaterialReactTableProps<InputOutputTicketDetailViewModel>['onEditingRowSave'] =
         async ({ exitEditingMode, row, values }) => {
             if (!Object.keys(validationErrors).length) {
-                tableData[row.index] = values;
+                props.detailList[row.index] = values;
                 //send/receive api updates here, then refetch or update local table data for re-render
-                setTableData([...tableData]);
+                props.onChange(props.detailList);
                 exitEditingMode(); //required to exit editing mode and close modal
             }
         };
@@ -34,67 +42,47 @@ export const MedicineInOutTable: FC<{}> = observer((props) => {
     };
 
     const handleDeleteRow = useCallback(
-        (row: MRT_Row<Prescription>) => {
-            // if (
-            //     !confirm(`Are you sure you want to delete ${row.getValue('firstName')}`)
-            // ) {
-            //     return;
-            // }
-            //send api delete request here, then refetch or update local table data for re-render
-            tableData.splice(row.index, 1);
-            setTableData([...tableData]);
+        (row: MRT_Row<InputOutputTicketDetailViewModel>) => {
+            props.detailList.splice(row.index, 1);
+            props.onChange(props.detailList);
         },
-        [tableData],
+        [props.detailList],
     );
-    const columns = useMemo<MRT_ColumnDef<Prescription>[]>(
+
+    const handleDeleteButton = (item: InputOutputTicketDetailViewModel) => {
+
+    }
+
+    const columns = useMemo<MRT_ColumnDef<InputOutputTicketDetailViewModel>[]>(
         () => [
             {
                 accessorFn: (item) => item.Stt,
-                header: 'STT',
+                accessorKey: "Stt",
+                header: t('STT'),
                 size: 80,
             },
             {
                 accessorFn: (item) => item.MedicineCode,
-                header: 'Mã thuốc',
-                size: 140,
-                // muiTableBodyCellEditTextFieldProps: {
-                //     select: true,
-                //     children: states.map((state) => (
-                //         <MenuItem key={state} value={state}>
-                //             {state}
-                //         </MenuItem>
-                //     )),
-                // }
-                muiTableBodyCellProps: ({ cell }) => ({
-                    onChange: () => {
-                        console.log(cell.getValue(), cell.id);
-                    }
-                })
+                accessorKey: "MedicineCode",
+                header: t('Mã thuốc'),
+                size: 140
             },
             {
                 accessorFn: (item) => item.MedicineTitle,
-                header: 'Tên thuốc',
-                size: 140,
-                // muiTableBodyCellEditTextFieldProps: ({ cell }) => ({
-                //     ...getCommonEditTextFieldProps(cell),
-                // }),
+                header: t('Tên thuốc'),
+                accessorKey: "MedicineTitle",
+                size: 140
             },
             {
                 accessorFn: (item) => item.MedicineUnit,
-                header: 'Đơn vị',
-                // muiTableBodyCellEditTextFieldProps: ({ cell }) => ({
-                //     ...getCommonEditTextFieldProps(cell),
-                //     type: 'email',
-                // }),
+                header: t('Đơn vị'),
+                accessorKey: "MedicineUnit"
             },
             {
                 accessorFn: (item) => item.Quantity,
-                header: 'Số lượng',
-                size: 80,
-                // muiTableBodyCellEditTextFieldProps: ({ cell }) => ({
-                //     ...getCommonEditTextFieldProps(cell),
-                //     type: 'number',
-                // }),
+                header: t('Số lượng'),
+                accessorKey: "Quantity",
+                size: 80
             }
         ], []
     );
@@ -111,9 +99,10 @@ export const MedicineInOutTable: FC<{}> = observer((props) => {
                     },
                 }}
                 columns={columns}
-                data={tableData}
+                data={props.detailList}
                 editingMode="modal" //default
                 positionActionsColumn="last"
+                enableRowActions={true}
                 onEditingRowSave={handleSaveRowEdits}
                 onEditingRowCancel={handleCancelRowEdits}
                 renderRowActions={({ row, table }) => (
@@ -151,9 +140,9 @@ export const MedicineInOutTable: FC<{}> = observer((props) => {
 });
 
 interface CreateModalProps {
-    columns: MRT_ColumnDef<Prescription>[];
+    columns: MRT_ColumnDef<InputOutputTicketDetailViewModel>[];
     onClose: () => void;
-    onSubmit: (values: Prescription) => void;
+    onSubmit: (values: InputOutputTicketDetailViewModel) => void;
     open: boolean;
 }
 
@@ -164,12 +153,19 @@ export const CreateNewAccountModal = ({
     onClose,
     onSubmit,
 }: CreateModalProps) => {
-    const [values, setValues] = useState<any>(() =>
+    const [values, setValues] = useState<InputOutputTicketDetailViewModel>(() =>
         columns.reduce((acc, column) => {
             acc[column.accessorKey ?? ''] = '';
             return acc;
         }, {} as any),
     );
+    const { t } = useTranslation();
+
+    useEffect(() => {
+        setValues(new InputOutputTicketDetailViewModel())
+    }, [open])
+
+    const [medicineFilter, setMedicineFilter] = useState<MedicineDefinitionViewModel[]>([])
 
     const handleSubmit = () => {
         //put your validation logic here
@@ -177,10 +173,29 @@ export const CreateNewAccountModal = ({
         onClose();
     };
 
+    const handleMedicineCodeChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        MedicineDefinitionAPI.getItems({ select: "ID,Code,Title,Unit", filter: `startswith(Title,'${event.target.value}')`, page: 0, size: 20, currentPageData: null })
+            .then(result => {
+                setMedicineFilter(result.Data);
+            })
+    }
+
+    const handleMedicineSelected = (event: SyntheticEvent<Element, Event>, newValue: MedicineDefinitionViewModel | null) => {
+        if (newValue != null) {
+            setValues({ ...values, MedicineCode: newValue.Code, MedicineTitle: newValue.Title, MedicineUnit: newValue.Unit })
+        }
+    }
+
+    const isDisabled = (field: string | undefined) => {
+        if (field == "MedicineTitle" || field == "MedicineUnit")
+            return true;
+        return false;
+    }
+
     return (
         <Dialog open={open}>
             <DialogTitle textAlign="center">Thêm thuốc</DialogTitle>
-            <DialogContent>
+            <DialogContent style={{ paddingTop: DataConstant.CONTAINER_PADDING }}>
                 <form onSubmit={(e) => e.preventDefault()}>
                     <Stack
                         sx={{
@@ -189,23 +204,57 @@ export const CreateNewAccountModal = ({
                             gap: '1.5rem',
                         }}
                     >
-                        {columns.filter(e => e.header != "STT").map((column) => (
-                            <TextField
-                                key={column.accessorKey}
-                                label={column.header}
-                                name={column.accessorKey}
-                                onChange={(e) =>
-                                    setValues({ ...values, [e.target.name]: e.target.value })
-                                }
-                            />
-                        ))}
+                        <Autocomplete
+                            id="combo-box-demo"
+                            key="MedicineCode"
+                            fullWidth
+                            options={medicineFilter}
+                            getOptionLabel={(option: MedicineDefinitionViewModel) => option.Title || ""}
+                            onChange={handleMedicineSelected}
+                            renderInput={(params) => <TextField  {...params} label="Mã thuốc" InputLabelProps={{}} onChange={handleMedicineCodeChange} />}
+                        />
+                        <TextField
+                            key="MedicineTitle"
+                            label="Tên thuốc"
+                            name="MedicineTitle"
+                            disabled={true}
+                            value={values["MedicineTitle"] || ""}
+                            type={"text"}
+                            fullWidth
+                            onChange={(e) =>
+                                setValues({ ...values, MedicineTitle: e.target.value })
+                            }
+                        />
+                        <TextField
+                            key="MedicineUnit"
+                            label="Đơn vị"
+                            name="MedicineUnit"
+                            disabled={true}
+                            value={values["MedicineUnit"] || ""}
+                            type={"text"}
+                            fullWidth
+                            onChange={(e) =>
+                                setValues({ ...values, MedicineUnit: e.target.value })
+                            }
+                        />
+                        <TextField
+                            key="Quantity"
+                            label="Số lượng"
+                            name="Quantity"
+                            value={values["Quantity"] || ""}
+                            type={"number"}
+                            fullWidth
+                            onChange={(e) =>
+                                setValues({ ...values, Quantity: parseInt(e.target.value) })
+                            }
+                        />
                     </Stack>
                 </form>
             </DialogContent>
             <DialogActions sx={{ p: '1.25rem' }}>
-                <Button onClick={onClose}>Cancel</Button>
+                <Button onClick={onClose}>{t("Hủy")}</Button>
                 <Button color="secondary" onClick={handleSubmit} variant="contained">
-                    Create New Account
+                    {t("Thêm")}
                 </Button>
             </DialogActions>
         </Dialog>

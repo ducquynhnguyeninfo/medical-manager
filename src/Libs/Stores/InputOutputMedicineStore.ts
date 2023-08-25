@@ -16,7 +16,7 @@ export class InputOutputMedicineStore {
 
     loadList(page: number, size: number) {
         this.store.sLinear.set_isShow(true);
-        InputOutputTicketAPI.getItems({ select: "MedicineCategory,MedicineCode, MedicineTitle, MedicineID,MedicineQuantity,MedicineUnit,Reason,InputDate,InputUser,MedicineQuantityBefore,IsInput,Created"
+        InputOutputTicketAPI.getItems({ select: "ID,Reason,InputDate,InputUser,IsInput,Created,Status"
                     , page: page, size: size, currentPageData: this.listData}).then(result => {
             this.store.sLinear.set_isShow(false);
             this.set_listData(result || []);

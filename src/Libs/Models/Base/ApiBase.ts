@@ -56,11 +56,15 @@ export class ApiBase {
                     headers: postHeader
                 });
 
+
+
             if (result.value != null)
                 return [undefined, result.value as any as T]
             else
                 return [undefined, result as any as T]
-        } catch (ex) {
+        } catch (ex: any) {
+            if (ex.responseJSON != null && ex.responseJSON["odata.error"] != null)
+                return [new Error(ex.responseJSON["odata.error"].message.value), undefined];
             if (ex instanceof Error)
                 return [new Error(ex.message), undefined];
             else
@@ -94,7 +98,9 @@ export class ApiBase {
                 return [undefined, result.value as any as T]
             else
                 return [undefined, result as any as T]
-        } catch (ex) {
+        } catch (ex: any) {
+            if (ex.responseJSON != null && ex.responseJSON["odata.error"] != null)
+                return [new Error(ex.responseJSON["odata.error"].message.value), undefined];
             if (ex instanceof Error)
                 return [new Error(ex.message), undefined];
             else
@@ -145,10 +151,10 @@ export class ApiBase {
         else return 0;
     }
 
-    static getItemById<T>(url: string, listTitle: string, id: string, queryOption: QueryOption<T>): Promise<[Error | undefined, object | undefined]> {
+    static getItemById<T>(url: string, listTitle: string, id: string, queryOption: QueryOption<T>): Promise<[Error | undefined, T | undefined]> {
         var m_Url = url + "/_api/web/lists/getByTitle('" + listTitle + "')/items(" + id + ")/";
         m_Url += "?$select=" + queryOption.select;
-        m_Url += queryOption.expand != "" ? "&$expand=" + queryOption.expand : "";
+        m_Url += queryOption.expand != null ? "&$expand=" + queryOption.expand : "";
         return ApiBase.get(m_Url);
     }
 
