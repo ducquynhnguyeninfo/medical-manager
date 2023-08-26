@@ -117,7 +117,7 @@ const DanhSachThuoc: FC<{}> = observer((props) => {
                 <Grid item md={6} xs={12}></Grid>
                 <Grid item container md={6} xs={12} justifyContent="flex-end">
                     <Stack spacing={2} direction="row">
-                        <Button variant="contained" color="secondary" endIcon={<FontAwesomeIcon icon={faTrash} />} onClick={handleMedicineDeleteClick} >
+                        <Button variant="contained" color="error" endIcon={<FontAwesomeIcon icon={faTrash} />} onClick={handleMedicineDeleteClick} >
                             Xóa thuốc
                         </Button>
                         <Button variant="contained" endIcon={<FontAwesomeIcon icon={faCirclePlus} />} onClick={() => { setOpen(true); setEditSelectedItem(new MedicineDefinitionViewModel()) }} >

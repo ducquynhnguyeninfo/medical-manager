@@ -25,6 +25,13 @@ export default class InputOutputTicketAPI {
 
     }
 
+    static async DeleteItem(item: InputOutputTicketViewModel) {
+        let [error,] = await ApiBase.deleteItem(ApiBase.BASE_URI, InputOutputTicketAPI.LIST_NAME, item);
+        if (error)
+            return error;
+        else return null;
+    }
+
     static async GetItemByID(itemID: string, queryOption: QueryOption<InputOutputTicketViewModel>) : Promise<InputOutputTicketViewModel | null> {
         let [error, data] = await ApiBase.getItemById<InputOutputTicketViewModel>(ApiBase.BASE_URI, InputOutputTicketAPI.LIST_NAME, itemID, queryOption);
         if (error)

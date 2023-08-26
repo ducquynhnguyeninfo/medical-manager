@@ -20,12 +20,12 @@ import { MedicineInOutTable } from "./MedicineInOutTable";
 export const InputMedicine: FC<{}> = observer((props) => {
     const [ticket, setTicket] = useState<InputOutputTicketViewModel>(new InputOutputTicketViewModel());
     const [ticketDetails, setTicketDetails] = useState<InputOutputTicketDetailViewModel[]>([]);
-    const { sModal, sLinear } = useStore();
+    const { sModal, sLinear, sInputOutputMedicine } = useStore();
     const navigate = useNavigate();
     let { ticketID } = useParams();
 
     useEffect(() => {
-
+        sInputOutputMedicine.set_ticketID(ticketID || "");
         if (ticketID == null) {
             setTicket({ ...ticket, InputDate: moment().toDate() })
         } else {
@@ -47,67 +47,10 @@ export const InputMedicine: FC<{}> = observer((props) => {
             if (result instanceof Error) {
                 sModal.ShowErrorMessage(result.message)
             } else {
-                updateMedicineTable(ticketDetails);
+                sInputOutputMedicine.updateMedicineTable(ticketDetails);
                 // navigate(routeConfig.NhapXuatThuoc.pattern);
             }
         });
-    }
-
-    const deleteAllOldMedicineTable = async (ticketId: string) => {
-        let data = await getAllOldTicketDetail(ticketId);
-
-        if (data == null || data.Data.length <= 0)
-            return;
-
-        let deleteHandle = (item: InputOutputTicketDetailViewModel, callback: any) => {
-            InputOutputTicketDetailAPI.DeleteItem(item).then(error => {
-                if (error)
-                    callback(error.message);
-                else
-                    callback();
-            });
-        }
-
-        let promise = new Promise<Error | null>((resolve) => {
-            async.each(data.Data, deleteHandle, function (err) {
-                if (err) {
-                    resolve(err);
-                } else {
-                    resolve(null)
-                }
-            });
-        });
-        return promise;
-    }
-
-    const getAllOldTicketDetail = async (ticketId: string) => {
-        return InputOutputTicketDetailAPI.getItems({ select: "ID", filter: "TicketID eq " + ticketID, currentPageData: null });
-    }
-
-    const updateMedicineTable = (medicines: InputOutputTicketDetailViewModel[]) => {
-        let addItemHandler = (item: InputOutputTicketDetailViewModel, callback: any) => {
-            InputOutputTicketDetailAPI.AddItem(item).then(result => {
-                if(result == null || result instanceof Error) {
-                    callback(result?.message || "Có lỗi xảy ra");
-                } else {
-                    callback();
-                }
-            });
-        };
-
-        //delete old data
-        sLinear.set_isShow(true);
-        deleteAllOldMedicineTable(ticketID || "").then(error => {
-            //insert new
-            async.each(medicines, addItemHandler, function (err) {
-                sLinear.set_isShow(false);
-                if (err) {
-                    sModal.ShowErrorMessage(err.message);
-                } else {
-                    sModal.ShowSuccessMessage("Cập nhật thành công");
-                }
-            });
-        })
     }
 
     const handleMedicineTableChange = (data: InputOutputTicketDetailViewModel[]) => {
@@ -150,12 +93,19 @@ export const InputMedicine: FC<{}> = observer((props) => {
                 </Grid>
             </Grid>
             <Stack justifyContent={"space-between"} direction="row" spacing={2} style={{ marginTop: DataConstant.CONTAINER_PADDING }}>
-                <Button color="inherit" variant="contained" onClick={() => navigate(routeConfig.NhapXuatThuoc.pattern)}>
-                    {t("Quay lại danh sách")}
-                </Button>
-                <Button color="primary" variant="contained" disabled={sLinear.isShow} onClick={handleSaveTicket}>
-                    {t("Lưu phiếu nhập")}
-                </Button>
+                <Stack>
+                    <Button color="inherit" variant="contained" onClick={() => navigate(routeConfig.NhapXuatThuoc.pattern)}>
+                        {t("Quay lại danh sách")}
+                    </Button>
+                </Stack>
+                <Stack direction="row" spacing={2} justifyContent="flex-end">
+                    {ticketDetails.filter(e => e.ID > 0).length > 0 && (<Button color="secondary" variant="contained" disabled={sLinear.isShow} onClick={handleSaveTicket}>
+                        {t("Gửi duyệt")}
+                    </Button>)}
+                    <Button color="primary" variant="contained" disabled={sLinear.isShow} onClick={handleSaveTicket}>
+                        {t("Lưu phiếu nhập")}
+                    </Button>
+                </Stack>
             </Stack>
         </Paper>
     </DefaultLayout>)

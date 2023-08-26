@@ -4,7 +4,7 @@ import { Stack, Grid, Button, Chip, IconButton } from "@mui/material";
 import MaterialReactTable, { MRT_ColumnDef, MRT_PaginationState, MRT_RowSelectionState } from "material-react-table";
 import { observer } from "mobx-react-lite";
 import moment from "moment";
-import { FC, useEffect, useMemo, useState } from "react";
+import { FC, useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import InputOutputTicketAPI from "../../Libs/Models/InputOutputTicketAPI";
@@ -14,7 +14,8 @@ import { DataConstant } from "../../Libs/Utils/DataConstant";
 import { InputOutputTicketStatus } from "../../Libs/Utils/InputOutputTicketStatusEnum";
 import { InputOutputTicketViewModel } from "../../Libs/ViewModels/InputOutputTicketViewModel";
 import DefaultLayout from "../Layouts/DefaultLayout";
-import { faEdit, faArrowRight } from "@fortawesome/free-solid-svg-icons";
+import { faEdit, faArrowRight, faTrash } from "@fortawesome/free-solid-svg-icons";
+import Swal from "sweetalert2";
 
 export const InputOutputMedicineList: FC<{}> = observer((props) => {
     const { sInputOutputMedicine, sDanhSachThuoc, sModal, userContext } = useStore();
@@ -26,9 +27,14 @@ export const InputOutputMedicineList: FC<{}> = observer((props) => {
     const navigate = useNavigate();
     const { t } = useTranslation();
 
+
     useEffect(() => {
         sInputOutputMedicine.loadList(0, DataConstant.PAGE_SIZE);
     }, [sInputOutputMedicine])
+
+    useEffect(() => {
+        sInputOutputMedicine.loadList(pagination.pageIndex, pagination.pageSize);
+    }, [pagination])
 
     const handleInputAddClick = () => {
         let newItem = new InputOutputTicketViewModel();
@@ -48,8 +54,21 @@ export const InputOutputMedicineList: FC<{}> = observer((props) => {
                     navigate(routeConfig.NhapThuoc.pattern.replaceAll(":ticketID", result.ID.toString()))
             }
         });
-
     }
+
+    const getRowSelected = useMemo(() => {
+        let selectedIndexs = Object.keys(rowSelection);
+        let selectedItems: Array<InputOutputTicketViewModel> = [];
+
+        selectedIndexs.forEach((item: string) => {
+            if (sInputOutputMedicine.listData !== null && sInputOutputMedicine.listData.Data.length > 0) {
+                let found = sInputOutputMedicine.listData.Data[parseInt(item)];
+                if (found != null)
+                    selectedItems.push(found)
+            }
+        })
+        return selectedItems;
+    }, [rowSelection]);
 
     const handleOutputAddClick = () => {
         let newItem = new InputOutputTicketViewModel();
@@ -69,7 +88,39 @@ export const InputOutputMedicineList: FC<{}> = observer((props) => {
                     navigate(routeConfig.XuatThuoc.pattern.replaceAll(":ticketID", result.ID.toString()))
             }
         });
+    }
 
+    const handleDeleteSelectedItem = () => {
+        Swal.fire({
+            title: t('Bạn chắc chắn muốn xóa') + "?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: t('Đồng ý Xóa'),
+            cancelButtonText: t('Hủy')
+        }).then((result) => {
+            if (result.isConfirmed) {
+                sInputOutputMedicine.delete_selectedMedicine(getRowSelected).then(error => {
+                    if (error) {
+                        Swal.fire({
+                            title: t('Lỗi'),
+                            text: t(error.message),
+                            icon: 'error',
+                            confirmButtonText: t("Xác nhận")
+                        });
+                    } else {
+                        Swal.fire({
+                            title: t('Thành công'),
+                            text: t("Đã xóa thành công"),
+                            icon: 'success',
+                            confirmButtonText: t("Xác nhận")
+                        });
+
+                        sInputOutputMedicine.loadList(pagination.pageIndex, pagination.pageSize);
+                        setRowSelection({});
+                    }
+                })
+            }
+        })
     }
 
     const getStatusElement = (status: number) => {
@@ -136,7 +187,13 @@ export const InputOutputMedicineList: FC<{}> = observer((props) => {
     return (<DefaultLayout>
         <Stack spacing={2}>
             <Grid container>
-                <Grid item md={6} xs={12}></Grid>
+                <Grid item md={6} xs={12}>
+                    <Stack spacing={2} direction="row" justifyContent="flex-start">
+                        <Button variant="contained" color="error" endIcon={<FontAwesomeIcon icon={faTrash} />} onClick={handleDeleteSelectedItem} >
+                            Xóa {getRowSelected.length > 0 ? (<span style={{ padding: "0px 5px" }}>{getRowSelected.length}</span>) : ("")} phiếu
+                        </Button>
+                    </Stack>
+                </Grid>
                 <Grid item container md={6} xs={12} justifyContent="flex-end">
                     <Stack spacing={2} direction="row">
                         <Button variant="contained" color="secondary" endIcon={<FontAwesomeIcon icon={faArrowRight} />} onClick={handleOutputAddClick} >
@@ -161,8 +218,19 @@ export const InputOutputMedicineList: FC<{}> = observer((props) => {
                     pagination: pagination,
                     rowSelection: rowSelection
                 }}
+                muiSelectCheckboxProps={({ row, table }) => {
+                    //ẩn hiện checkbox
+                    if (row.original.Status == InputOutputTicketStatus.APPROVED || row.original.Status == InputOutputTicketStatus.WAITING_APPROVED)
+                        return {
+                            disabled: true,
+                        }
+                    else {
+                        return {
+                            disabled: false,
+                        }
+                    }
+                }}
             />
         </Stack>
-        {/* <AddMedicineModal open={isOpen} setOpen={setOpen} medicineUnitList={sDanhSachThuoc.medicineUnitDefinitions || []}></AddMedicineModal> */}
     </DefaultLayout>)
 });

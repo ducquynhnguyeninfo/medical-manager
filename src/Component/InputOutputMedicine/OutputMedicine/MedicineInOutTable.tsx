@@ -2,7 +2,7 @@ import { Box, Tooltip, IconButton, Button, Dialog, DialogActions, DialogContent,
 import MaterialReactTable, { MaterialReactTableProps, MRT_Row, MRT_ColumnDef } from "material-react-table";
 import { observer } from "mobx-react-lite";
 import { useState, useCallback, useMemo, FC, ChangeEvent, SyntheticEvent, useEffect } from "react";
-import { faEdit, faRecycle, faTrash } from '@fortawesome/free-solid-svg-icons'
+import { faTrash } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { MedicineDefinitionViewModel } from "../../../Libs/ViewModels/MedicineDefinitionViewModel";
 import MedicineDefinitionAPI from "../../../Libs/Models/MedicineDefinitionAPI";
