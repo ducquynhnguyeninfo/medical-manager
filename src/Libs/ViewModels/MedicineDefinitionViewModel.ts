@@ -6,6 +6,7 @@ export class MedicineDefinitionViewModel extends BaseEntitySharePointItem {
     Code: string | undefined;
     Unit: string | undefined;
     Description: string | undefined;
+    CurrentQuantity: number = 0;
     CreatedBy: string | undefined;
     CreatedAt: Moment | undefined;
     __metadata: any = {
@@ -23,20 +24,5 @@ export class MedicineDefinitionViewModel extends BaseEntitySharePointItem {
         //     CreatedAt: observable,
         //     Description: observable
         // });
-    }
-
-    static toJS(item: MedicineDefinitionViewModel) {
-        return {
-            Title: item.Title,
-            Code: item.Code,
-            Unit: item.Unit,
-            Description: item.Description,
-            CreatedBy: item.CreatedBy,
-            CreatedAt: item.CreatedAt,
-            "odata.etag": item["odata.etag"],
-            __metadata: {
-                "type": "SP.Data.MedicineDefinitionListItem"
-            }
-        }
     }
 }

@@ -4,7 +4,7 @@ import { Stack, Grid, Button, Chip, IconButton } from "@mui/material";
 import MaterialReactTable, { MRT_ColumnDef, MRT_PaginationState, MRT_RowSelectionState } from "material-react-table";
 import { observer } from "mobx-react-lite";
 import moment from "moment";
-import { FC, useEffect, useMemo, useState, useTransition } from "react";
+import { FC, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import InputOutputTicketAPI from "../../Libs/Models/InputOutputTicketAPI";
@@ -14,7 +14,7 @@ import { DataConstant } from "../../Libs/Utils/DataConstant";
 import { InputOutputTicketStatus } from "../../Libs/Utils/InputOutputTicketStatusEnum";
 import { InputOutputTicketViewModel } from "../../Libs/ViewModels/InputOutputTicketViewModel";
 import DefaultLayout from "../Layouts/DefaultLayout";
-import { faEdit } from "@fortawesome/free-solid-svg-icons";
+import { faEdit, faArrowRight } from "@fortawesome/free-solid-svg-icons";
 
 export const InputOutputMedicineList: FC<{}> = observer((props) => {
     const { sInputOutputMedicine, sDanhSachThuoc, sModal, userContext } = useStore();
@@ -51,6 +51,27 @@ export const InputOutputMedicineList: FC<{}> = observer((props) => {
 
     }
 
+    const handleOutputAddClick = () => {
+        let newItem = new InputOutputTicketViewModel();
+        newItem.Status = InputOutputTicketStatus.CREATED;
+        newItem.InputUser = userContext?.Email || "";
+        newItem.Created = new Date();
+        newItem.IsInput = false;
+        newItem.InputDate = new Date();
+        newItem.Reason = "";
+        InputOutputTicketAPI.AddItem(newItem).then(result => {
+            if (result instanceof Error) {
+                sModal.ShowErrorMessage(result.message);
+            } else {
+                if (result == null)
+                    sModal.ShowErrorMessage("Có lỗi khi tạo dữ liệu");
+                else
+                    navigate(routeConfig.XuatThuoc.pattern.replaceAll(":ticketID", result.ID.toString()))
+            }
+        });
+
+    }
+
     const getStatusElement = (status: number) => {
         if (status == InputOutputTicketStatus.CREATED) {
             return (<Chip label="Soạn thảo" color="default" variant="filled" />)
@@ -62,13 +83,16 @@ export const InputOutputMedicineList: FC<{}> = observer((props) => {
     }
 
     const handleEditButton = (row: InputOutputTicketViewModel) => {
-        navigate(routeConfig.NhapThuoc.pattern.replaceAll(":ticketID", row.ID.toString()))
+        if (row.IsInput == true)
+            navigate(routeConfig.NhapThuoc.pattern.replaceAll(":ticketID", row.ID.toString()))
+        else
+            navigate(routeConfig.XuatThuoc.pattern.replaceAll(":ticketID", row.ID.toString()))
     }
 
     const columns = useMemo<MRT_ColumnDef<InputOutputTicketViewModel>[]>(
         () =>
             [{
-                accessorFn: (row) => moment(row.Created).format("DD-MM-YYYY hh:mm"),
+                accessorFn: (row) => moment(row.InputDate).format("DD-MM-YYYY hh:mm"),
                 header: t('Ngày thực hiện'),
                 size: 40,
             },
@@ -83,9 +107,9 @@ export const InputOutputMedicineList: FC<{}> = observer((props) => {
                 size: 120,
             },
             {
-                accessorFn: (row) => "a",
+                accessorFn: (row) => sInputOutputMedicine.listTicketDetail.filter(e => e.TicketID == row.ID).length,
                 header: t('Số lượng thuốc nhập'),
-                size: 120,
+                size: 120
             },
             {
                 accessorFn: (row) => row.IsInput === true ? (<Chip label="Nhập" color="primary" variant="filled" />) : (<Chip label="Xuất" color="warning" variant="filled" />),
@@ -115,9 +139,9 @@ export const InputOutputMedicineList: FC<{}> = observer((props) => {
                 <Grid item md={6} xs={12}></Grid>
                 <Grid item container md={6} xs={12} justifyContent="flex-end">
                     <Stack spacing={2} direction="row">
-                        {/* <Button variant="contained" color="secondary" endIcon={<FontAwesomeIcon icon={faTrash} />} onClick={handleMedicineDeleteClick} >
-                            Xóa thuốc
-                        </Button> */}
+                        <Button variant="contained" color="secondary" endIcon={<FontAwesomeIcon icon={faArrowRight} />} onClick={handleOutputAddClick} >
+                            Xuất kho
+                        </Button>
                         <Button variant="contained" endIcon={<FontAwesomeIcon icon={faCirclePlus} />} onClick={handleInputAddClick} >
                             Nhập kho
                         </Button>
@@ -139,11 +163,6 @@ export const InputOutputMedicineList: FC<{}> = observer((props) => {
                 }}
             />
         </Stack>
-        <Stack justifyContent={"flex-end"} direction="row" style={{ marginTop: DataConstant.CONTAINER_PADDING }}>
-                <Button color="primary" variant="contained">
-                    {t("Tạo phiếu nhập")}
-                </Button>
-            </Stack>
         {/* <AddMedicineModal open={isOpen} setOpen={setOpen} medicineUnitList={sDanhSachThuoc.medicineUnitDefinitions || []}></AddMedicineModal> */}
     </DefaultLayout>)
 });

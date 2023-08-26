@@ -17,4 +17,5 @@ input[type=text] {
   background-color: none;
   background: none !important;
   color: currentcolor !important;
+  padding: 8.5px 14px;
 }

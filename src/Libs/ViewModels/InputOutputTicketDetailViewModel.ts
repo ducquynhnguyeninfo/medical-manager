@@ -1,7 +1,6 @@
 import { BaseEntitySharePointItem } from "./BaseEntitySharePointItem";
 
 export class InputOutputTicketDetailViewModel extends BaseEntitySharePointItem {
-    Stt: number = 0;
     MedicineCategory: string | undefined;
     MedicineCode: string | undefined;
     MedicineTitle: string | undefined;

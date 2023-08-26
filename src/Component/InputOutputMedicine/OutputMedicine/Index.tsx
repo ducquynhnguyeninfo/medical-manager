@@ -17,7 +17,7 @@ import { InputOutputTicketViewModel } from "../../../Libs/ViewModels/InputOutput
 import DefaultLayout from "../../Layouts/DefaultLayout";
 import { MedicineInOutTable } from "./MedicineInOutTable";
 
-export const InputMedicine: FC<{}> = observer((props) => {
+export const OutputMedicine: FC<{}> = observer((props) => {
     const [ticket, setTicket] = useState<InputOutputTicketViewModel>(new InputOutputTicketViewModel());
     const [ticketDetails, setTicketDetails] = useState<InputOutputTicketDetailViewModel[]>([]);
     const { sModal, sLinear } = useStore();
@@ -116,33 +116,33 @@ export const InputMedicine: FC<{}> = observer((props) => {
 
     return (<DefaultLayout>
         <Paper style={{ padding: (DataConstant.CONTAINER_PADDING) }}>
-            <Typography variant="h6" gutterBottom style={{ marginBottom: DataConstant.CONTAINER_PADDING }}>Thông tin nhập kho</Typography>
+            <Typography variant="h6" gutterBottom style={{ marginBottom: DataConstant.CONTAINER_PADDING }}>{t("Thông tin xuất kho")}</Typography>
             <Grid container spacing={2}>
                 <Grid item xs={12} container spacing={2}>
                     <Grid item xs={12} md={3}>
-                        <DatePicker label="Ngày nhập" slotProps={{ textField: { size: "small", fullWidth: true } }} format="DD-MM-YYYY" value={dayjs(ticket.InputDate)}
+                        <DatePicker label="Ngày xuất" slotProps={{ textField: { size: "small", fullWidth: true } }} format="DD-MM-YYYY" value={dayjs(ticket.InputDate)}
                             onChange={(value) => {
                                 if (value != null)
                                     setTicket({ ...ticket, InputDate: value.toDate() })
                             }} />
                     </Grid>
                     <Grid item xs={12} md={3}>
-                        <TextField id="standard-basic" label="Email nhân viên nhập thuốc" fullWidth size="small" value={ticket.InputUser || ""}
+                        <TextField id="standard-basic" label="Email nhân viên xuất thuốc" fullWidth size="small" value={ticket.InputUser || ""}
                             onChange={(event) => setTicket({ ...ticket, InputUser: event.target.value })} />
                     </Grid>
                     {/* <Grid item xs={12} md={3}>
-                        <TextField id="standard-basic" label="Họ tên nhân viên nhập thuốc" fullWidth size="small"/>
+                        <TextField id="standard-basic" label="Họ tên nhân viên xuất thuốc" fullWidth size="small"/>
                     </Grid> */}
                 </Grid>
                 <Grid item xs={12} md={6} container spacing={2}>
                     <Grid item xs={12}>
-                        <TextField id="standard-basic" label="Lý do nhập thuốc" fullWidth size="small" value={ticket.Reason || ""}
+                        <TextField id="standard-basic" label="Lý do xuất thuốc" fullWidth size="small" value={ticket.Reason || ""}
                             onChange={(event) => setTicket({ ...ticket, Reason: event.target.value })} />
                     </Grid>
                 </Grid>
                 <Grid item container xs={12} spacing={2}>
                     <Grid item xs={12}>
-                        <Typography variant="subtitle1" gutterBottom style={{ marginBottom: DataConstant.CONTAINER_PADDING, marginTop: DataConstant.CONTAINER_PADDING }}>Danh sách thuốc nhập</Typography>
+                        <Typography variant="subtitle1" gutterBottom style={{ marginBottom: DataConstant.CONTAINER_PADDING, marginTop: DataConstant.CONTAINER_PADDING }}>Danh sách thuốc xuất</Typography>
                     </Grid>
                     <Grid item xs={12}>
                         <MedicineInOutTable detailList={ticketDetails} ticketID={ticketID || "0"} onChange={handleMedicineTableChange}></MedicineInOutTable>
@@ -154,7 +154,7 @@ export const InputMedicine: FC<{}> = observer((props) => {
                     {t("Quay lại danh sách")}
                 </Button>
                 <Button color="primary" variant="contained" disabled={sLinear.isShow} onClick={handleSaveTicket}>
-                    {t("Lưu phiếu nhập")}
+                    {t("Lưu phiếu xuất")}
                 </Button>
             </Stack>
         </Paper>

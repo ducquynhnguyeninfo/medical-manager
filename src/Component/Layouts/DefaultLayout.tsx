@@ -32,7 +32,8 @@ const DefaultLayout: React.FC<Props> = (props) => {
                             marginTop: "64px",
                             height: '100vh',
                             overflow: 'auto',
-                            padding: "20px"
+                            padding: "20px",
+                            width: "100px"
                         }}
                     >
                         {props.children}

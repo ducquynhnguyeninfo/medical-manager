@@ -12,6 +12,7 @@ import { LoadingPageComponent } from '../../Component/LoadingPageComponent/Index
 import { Login } from '../../Component/Login/Login';
 import { InputOutputMedicineList } from '../../Component/InputOutputMedicine/InputOutputMedicineList';
 import { InputMedicine } from '../../Component/InputOutputMedicine/InputMedicine/Index';
+import { OutputMedicine } from '../../Component/InputOutputMedicine/OutputMedicine/Index';
 
 export const homeRoute = createRouterState("home");
 export const notFound = createRouterState('notFound');
@@ -36,7 +37,8 @@ export const routeConfig: {
     test: RouterConfig,
     login: RouterConfig,
     NhapXuatThuoc: RouterConfig,
-    NhapThuoc: RouterConfig
+    NhapThuoc: RouterConfig,
+    XuatThuoc: RouterConfig
 } = {
     InitPage: { pattern: "/sites/e-form-test/quanlythuoc/SitePages/Admin.aspx", comp: (<LoadingPageComponent/>) },
     home: { pattern: "/sites/e-form-test/quanlythuoc/SitePages/Admin.aspx/Home", comp: (<DanhSachThuoc/>), allowAnonymous: false, roles: [USER_ROLE.USER] },
@@ -44,6 +46,7 @@ export const routeConfig: {
     login: {pattern: "/sites/e-form-test/quanlythuoc/SitePages/Admin.aspx/login", comp: (<Login />), allowAnonymous: true},
     NhapXuatThuoc: { pattern: "/sites/e-form-test/quanlythuoc/SitePages/Admin.aspx/nhap-xuat-thuoc", comp: (<InputOutputMedicineList/>), allowAnonymous: false, roles: [USER_ROLE.USER] },
     NhapThuoc: { pattern: "/sites/e-form-test/quanlythuoc/SitePages/Admin.aspx/nhap-xuat-thuoc/nhap/:ticketID", comp: (<InputMedicine/>), allowAnonymous: false, roles: [USER_ROLE.USER] },
+    XuatThuoc: { pattern: "/sites/e-form-test/quanlythuoc/SitePages/Admin.aspx/nhap-xuat-thuoc/xuat/:ticketID", comp: (<OutputMedicine/>), allowAnonymous: false, roles: [USER_ROLE.USER] }
 };
 
 export const routers2 = toPairs(routeConfig).map(([name, value]) => {
