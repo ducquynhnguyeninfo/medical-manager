@@ -4,5 +4,5 @@ export class BaseEntitySharePointItem {
     "odata.id": string = "";
     "odata.editLink": string = "";
     "odata.etag": string = "";
-    ID: number  = 0;
+    ID: number = 0;
 }

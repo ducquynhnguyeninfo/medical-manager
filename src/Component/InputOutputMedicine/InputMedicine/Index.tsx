@@ -12,6 +12,7 @@ import { InputOutputTicketDetailAPI } from "../../../Libs/Models/InputOutputTick
 import { routeConfig } from "../../../Libs/Routers/Routes";
 import { useStore } from "../../../Libs/Stores";
 import { DataConstant } from "../../../Libs/Utils/DataConstant";
+import { InputOutputTicketStatus } from "../../../Libs/Utils/InputOutputTicketStatusEnum";
 import { InputOutputTicketDetailViewModel } from "../../../Libs/ViewModels/InputOutputTicketDetailViewModel";
 import { InputOutputTicketViewModel } from "../../../Libs/ViewModels/InputOutputTicketViewModel";
 import DefaultLayout from "../../Layouts/DefaultLayout";
@@ -34,7 +35,7 @@ export const InputMedicine: FC<{}> = observer((props) => {
     }, [])
 
     const loadTicket = (ticketID: string) => {
-        InputOutputTicketAPI.GetItemByID(ticketID, { select: "ID,InputDate,Created,InputUser,Reason", currentPageData: null })
+        InputOutputTicketAPI.GetItemByID(ticketID, { select: "*", currentPageData: null })
             .then(result => {
                 setTicket(result || new InputOutputTicketViewModel());
             })
@@ -55,6 +56,17 @@ export const InputMedicine: FC<{}> = observer((props) => {
 
     const handleMedicineTableChange = (data: InputOutputTicketDetailViewModel[]) => {
         setTicketDetails([...data]);
+    }
+
+    const handleSendToApprover = () => {
+        sInputOutputMedicine.sendToApprover(ticket).then(result => {
+            if(result instanceof Error)  {
+                sModal.ShowErrorMessage(result.message);
+            } else {
+                sModal.ShowSuccessMessage("Gửi duyệt thành công");
+                loadTicket(ticketID || "");
+            }
+        });
     }
 
     return (<DefaultLayout>
@@ -99,11 +111,11 @@ export const InputMedicine: FC<{}> = observer((props) => {
                     </Button>
                 </Stack>
                 <Stack direction="row" spacing={2} justifyContent="flex-end">
-                    {ticketDetails.filter(e => e.ID > 0).length > 0 && (<Button color="secondary" variant="contained" disabled={sLinear.isShow} onClick={handleSaveTicket}>
+                    {(ticketDetails.filter(e => e.ID > 0).length > 0 && ticket.Status == InputOutputTicketStatus.CREATED) && (<Button color="secondary" variant="contained" disabled={sLinear.isShow} onClick={handleSendToApprover}>
                         {t("Gửi duyệt")}
                     </Button>)}
                     <Button color="primary" variant="contained" disabled={sLinear.isShow} onClick={handleSaveTicket}>
-                        {t("Lưu phiếu nhập")}
+                        {t("Lưu phiếu xuất")}
                     </Button>
                 </Stack>
             </Stack>

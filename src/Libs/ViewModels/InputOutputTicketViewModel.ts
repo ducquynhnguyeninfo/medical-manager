@@ -10,7 +10,8 @@ export class InputOutputTicketViewModel extends BaseEntitySharePointItem {
     Status: number  = InputOutputTicketStatus.CREATED;
     Created: Date | null = null;
     Title: string = "";
-
+    ApprovalStep : string | null = null;
+    CurrentApprovalUser: string | null = null;
     __metadata: any = {
         "type": "SP.Data.InputTicketListItem"
     }

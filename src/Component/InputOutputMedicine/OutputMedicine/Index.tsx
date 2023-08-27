@@ -8,10 +8,10 @@ import moment from "moment";
 import { FC, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import InputOutputTicketAPI from "../../../Libs/Models/InputOutputTicketAPI";
-import { InputOutputTicketDetailAPI } from "../../../Libs/Models/InputOutputTicketDetailAPI";
 import { routeConfig } from "../../../Libs/Routers/Routes";
 import { useStore } from "../../../Libs/Stores";
 import { DataConstant } from "../../../Libs/Utils/DataConstant";
+import { InputOutputTicketStatus } from "../../../Libs/Utils/InputOutputTicketStatusEnum";
 import { InputOutputTicketDetailViewModel } from "../../../Libs/ViewModels/InputOutputTicketDetailViewModel";
 import { InputOutputTicketViewModel } from "../../../Libs/ViewModels/InputOutputTicketViewModel";
 import DefaultLayout from "../../Layouts/DefaultLayout";
@@ -27,15 +27,15 @@ export const OutputMedicine: FC<{}> = observer((props) => {
     useEffect(() => {
         sInputOutputMedicine.set_ticketID(ticketID || "");
 
+        setTicket({ ...ticket, InputDate: moment().toDate() })
         if (ticketID == null) {
-            setTicket({ ...ticket, InputDate: moment().toDate() })
         } else {
             loadTicket(ticketID);
         }
     }, [])
 
     const loadTicket = (ticketID: string) => {
-        InputOutputTicketAPI.GetItemByID(ticketID, { select: "ID,InputDate,Created,InputUser,Reason", currentPageData: null })
+        InputOutputTicketAPI.GetItemByID(ticketID, { select: "*", currentPageData: null })
             .then(result => {
                 setTicket(result || new InputOutputTicketViewModel());
             })
@@ -50,6 +50,17 @@ export const OutputMedicine: FC<{}> = observer((props) => {
             } else {
                 sInputOutputMedicine.updateMedicineTable(ticketDetails);
                 // navigate(routeConfig.NhapXuatThuoc.pattern);
+            }
+        });
+    }
+
+    const handleSendToApprover = () => {
+        sInputOutputMedicine.sendToApprover(ticket).then(result => {
+            if(result instanceof Error)  {
+                sModal.ShowErrorMessage(result.message);
+            } else {
+                sModal.ShowSuccessMessage("Gửi duyệt thành công");
+                loadTicket(ticketID || "");
             }
         });
     }
@@ -94,12 +105,19 @@ export const OutputMedicine: FC<{}> = observer((props) => {
                 </Grid>
             </Grid>
             <Stack justifyContent={"space-between"} direction="row" spacing={2} style={{ marginTop: DataConstant.CONTAINER_PADDING }}>
-                <Button color="inherit" variant="contained" onClick={() => navigate(routeConfig.NhapXuatThuoc.pattern)}>
-                    {t("Quay lại danh sách")}
-                </Button>
-                <Button color="primary" variant="contained" disabled={sLinear.isShow} onClick={handleSaveTicket}>
-                    {t("Lưu phiếu xuất")}
-                </Button>
+            <Stack>
+                    <Button color="inherit" variant="contained" onClick={() => navigate(routeConfig.NhapXuatThuoc.pattern)}>
+                        {t("Quay lại danh sách")}
+                    </Button>
+                </Stack>
+                <Stack direction="row" spacing={2} justifyContent="flex-end">
+                    {(ticketDetails.filter(e => e.ID > 0).length > 0 && ticket.Status == InputOutputTicketStatus.CREATED) && (<Button color="secondary" variant="contained" disabled={sLinear.isShow} onClick={handleSendToApprover}>
+                        {t("Gửi duyệt")}
+                    </Button>)}
+                    <Button color="primary" variant="contained" disabled={sLinear.isShow} onClick={handleSaveTicket}>
+                        {t("Lưu phiếu xuất")}
+                    </Button>
+                </Stack>
             </Stack>
         </Paper>
     </DefaultLayout>)

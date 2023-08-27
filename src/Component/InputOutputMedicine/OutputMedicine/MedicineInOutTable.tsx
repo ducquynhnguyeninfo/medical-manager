@@ -32,7 +32,7 @@ export const MedicineInOutTable: FC<{ detailList: InputOutputTicketDetailViewMod
     };
 
     const loadMedicineData = (ticketId: string) => {
-        InputOutputTicketDetailAPI.getItems({ select: "MedicineCode,MedicineTitle,MedicineUnit,Quantity,MedicineID,Quantity,TicketID,MedicineQuantityBefore", 
+        InputOutputTicketDetailAPI.getItems({ select: "MedicineCode,MedicineTitle,MedicineUnit,Quantity,MedicineID,Quantity,TicketID,MedicineQuantityBefore,ID", 
                         filter: "TicketID eq " + ticketId, 
                         currentPageData: null })
             .then(result => {

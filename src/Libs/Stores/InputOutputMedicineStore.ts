@@ -1,7 +1,10 @@
 import async from "async";
 import { action, makeObservable, observable } from "mobx";
+import { ApprovalProcessAPI } from "../Models/ApprovalProcessAPI";
 import InputOutputTicketAPI from "../Models/InputOutputTicketAPI";
 import { InputOutputTicketDetailAPI } from "../Models/InputOutputTicketDetailAPI";
+import { InputOutputTicketStatus } from "../Utils/InputOutputTicketStatusEnum";
+import { ApprovalProcessViewModel } from "../ViewModels/ApprovalProcessViewModel";
 import { InputOutputTicketDetailViewModel } from "../ViewModels/InputOutputTicketDetailViewModel";
 import { InputOutputTicketViewModel } from "../ViewModels/InputOutputTicketViewModel";
 import { PagedData } from "../ViewModels/PagedData";
@@ -47,6 +50,40 @@ export class InputOutputMedicineStore {
 
     set_ticketID(id: string) {
         this.ticketID = id;
+    }
+
+    sendToApprover(ticket: InputOutputTicketViewModel) {
+        let step = new ApprovalProcessViewModel();
+        step.Created = new Date();
+        step.Approver = "phidinh@thp.com.vn";
+        step.IsInput = ticket.IsInput;
+        step.ObjectID = ticket.ID;
+        step.RequesterEmail = ticket.InputUser;
+        step.ApprovedDate = new Date();
+        
+        //update ticket
+        ticket.Status = InputOutputTicketStatus.WAITING_APPROVED;
+        ticket.ApprovalStep = "0/1";
+        ticket.CurrentApprovalUser = step.Approver;
+
+        //run 2 function in promise
+        let promise = new Promise<Error | null>((resolve) => {
+            ApprovalProcessAPI.AddItem(step).then(result => {
+                if(result instanceof Error) {
+                    resolve(result);
+                } else {
+                    InputOutputTicketAPI.UpdateItem(ticket).then(result2 => {
+                        if(result2 instanceof Error) {
+                            resolve(result2)
+                        } else{
+                            resolve(null);
+                        }
+                    })
+                }
+            })
+        });
+
+        return promise
     }
 
     //utils method
