@@ -3,6 +3,7 @@ import { action, makeObservable, observable } from "mobx";
 import { ApprovalProcessAPI } from "../Models/ApprovalProcessAPI";
 import InputOutputTicketAPI from "../Models/InputOutputTicketAPI";
 import { InputOutputTicketDetailAPI } from "../Models/InputOutputTicketDetailAPI";
+import { routeConfig } from "../Routers/Routes";
 import { InputOutputTicketStatus } from "../Utils/InputOutputTicketStatusEnum";
 import { ApprovalProcessViewModel } from "../ViewModels/ApprovalProcessViewModel";
 import { InputOutputTicketDetailViewModel } from "../ViewModels/InputOutputTicketDetailViewModel";
@@ -53,12 +54,21 @@ export class InputOutputMedicineStore {
     }
 
     sendToApprover(ticket: InputOutputTicketViewModel) {
+        let url = process.env.REACT_APP_SITE_URL;
+        if(ticket.IsInput) {
+            url += routeConfig.NhapThuoc.pattern;
+        } else {
+            url += routeConfig.XuatThuoc.pattern;
+        }
+        url = url?.replaceAll("//","/");
+        
         let step = new ApprovalProcessViewModel();
         step.Created = new Date();
         step.Approver = "phidinh@thp.com.vn";
         step.IsInput = ticket.IsInput;
         step.ObjectID = ticket.ID;
         step.RequesterEmail = ticket.InputUser;
+        step.LinkPreview = url?.replace(":ticketID", ticket.ID.toString()) || ""
         step.ApprovedDate = new Date();
         
         //update ticket

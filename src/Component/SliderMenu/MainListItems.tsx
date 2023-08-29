@@ -10,6 +10,8 @@ import { DRAWER_WIDTH } from '../../Libs/Constants';
 import { Divider, IconButton, List, Toolbar } from '@mui/material';
 import { useStore } from '../../Libs/Stores';
 import { observer } from 'mobx-react-lite';
+import { faPills, faWarehouse, faStethoscope, faChartPie } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 var Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
   ({ theme, open }) => ({
@@ -47,25 +49,40 @@ export const MainListItems: React.FC<{}> = observer(() => {
     <React.Fragment>
       <ListItemButton>
         <ListItemIcon>
+          <FontAwesomeIcon icon={faPills}></FontAwesomeIcon>
         </ListItemIcon>
         <ListItemText primary="Danh mục thuốc" onClick={() => redirect(routeConfig.home.pattern)} />
       </ListItemButton>
       <ListItemButton>
         <ListItemIcon>
+          <FontAwesomeIcon icon={faWarehouse}></FontAwesomeIcon>
         </ListItemIcon>
         <ListItemText primary="Quản lý kho thuốc" onClick={() => redirect(routeConfig.NhapXuatThuoc.pattern)} />
       </ListItemButton>
       <ListItemButton>
         <ListItemIcon>
+          <FontAwesomeIcon icon={faStethoscope}></FontAwesomeIcon>
         </ListItemIcon>
-        <ListItemText primary="Quản lý đơn vị thuốc" />
+        <ListItemText primary="Khám bệnh" onClick={() => redirect(routeConfig.Appointment.pattern)} />
+      </ListItemButton>
+      <ListItemButton>
+        <ListItemIcon>
+          <FontAwesomeIcon icon={faChartPie}></FontAwesomeIcon>
+        </ListItemIcon>
+        <ListItemText primary="Xuât báo cáo thuốc" onClick={() => redirect(routeConfig.Appointment.pattern)} />
+      </ListItemButton>
+      <ListItemButton>
+        <ListItemIcon>
+          <FontAwesomeIcon icon={faChartPie}></FontAwesomeIcon>
+        </ListItemIcon>
+        <ListItemText primary="Xuât báo cáo bệnh" onClick={() => redirect(routeConfig.Appointment.pattern)} />
       </ListItemButton>
     </React.Fragment>)
 })
 
 
 export const SliderMenu: React.FC<{}> = observer((props) => {
-  const {sHeader} = useStore();
+  const { sHeader } = useStore();
 
   return (<Drawer variant="permanent" open={sHeader.isDrawerOpen}>
     <Toolbar

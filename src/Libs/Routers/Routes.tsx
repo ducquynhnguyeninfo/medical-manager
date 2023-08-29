@@ -13,6 +13,8 @@ import { Login } from '../../Component/Login/Login';
 import { InputOutputMedicineList } from '../../Component/InputOutputMedicine/InputOutputMedicineList';
 import { InputMedicine } from '../../Component/InputOutputMedicine/InputMedicine/Index';
 import { OutputMedicine } from '../../Component/InputOutputMedicine/OutputMedicine/Index';
+import { AppointmentList } from '../../Component/InputOutputMedicine copy/AppointmentList';
+import { AddAppointment } from '../../Component/InputOutputMedicine copy/AddAppointment/Index';
 
 export const homeRoute = createRouterState("home");
 export const notFound = createRouterState('notFound');
@@ -38,7 +40,9 @@ export const routeConfig: {
     login: RouterConfig,
     NhapXuatThuoc: RouterConfig,
     NhapThuoc: RouterConfig,
-    XuatThuoc: RouterConfig
+    XuatThuoc: RouterConfig,
+    Appointment: RouterConfig,
+    AddAppointment: RouterConfig
 } = {
     InitPage: { pattern: "/sites/e-form-test/quanlythuoc/SitePages/Admin.aspx", comp: (<LoadingPageComponent/>) },
     home: { pattern: "/sites/e-form-test/quanlythuoc/SitePages/Admin.aspx/Home", comp: (<DanhSachThuoc/>), allowAnonymous: false, roles: [USER_ROLE.USER] },
@@ -46,7 +50,9 @@ export const routeConfig: {
     login: {pattern: "/sites/e-form-test/quanlythuoc/SitePages/Admin.aspx/login", comp: (<Login />), allowAnonymous: true},
     NhapXuatThuoc: { pattern: "/sites/e-form-test/quanlythuoc/SitePages/Admin.aspx/nhap-xuat-thuoc", comp: (<InputOutputMedicineList/>), allowAnonymous: false, roles: [USER_ROLE.USER] },
     NhapThuoc: { pattern: "/sites/e-form-test/quanlythuoc/SitePages/Admin.aspx/nhap-xuat-thuoc/nhap/:ticketID", comp: (<InputMedicine/>), allowAnonymous: false, roles: [USER_ROLE.USER] },
-    XuatThuoc: { pattern: "/sites/e-form-test/quanlythuoc/SitePages/Admin.aspx/nhap-xuat-thuoc/xuat/:ticketID", comp: (<OutputMedicine/>), allowAnonymous: false, roles: [USER_ROLE.USER] }
+    XuatThuoc: { pattern: "/sites/e-form-test/quanlythuoc/SitePages/Admin.aspx/nhap-xuat-thuoc/xuat/:ticketID", comp: (<OutputMedicine/>), allowAnonymous: false, roles: [USER_ROLE.USER] },
+    Appointment: { pattern: "/sites/e-form-test/quanlythuoc/SitePages/Admin.aspx/kham-benh", comp: (<AppointmentList/>), allowAnonymous: false, roles: [USER_ROLE.USER] },
+    AddAppointment: { pattern: "/sites/e-form-test/quanlythuoc/SitePages/Admin.aspx/kham-benh/:appointmentID", comp: (<AddAppointment/>), allowAnonymous: false, roles: [USER_ROLE.USER] }
 };
 
 export const routers2 = toPairs(routeConfig).map(([name, value]) => {

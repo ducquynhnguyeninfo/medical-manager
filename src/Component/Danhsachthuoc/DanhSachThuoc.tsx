@@ -1,11 +1,11 @@
-import { Button, Grid, IconButton, Stack } from '@mui/material';
+import { Box, Button, Grid, IconButton, Stack } from '@mui/material';
 import MaterialReactTable, { MaterialReactTableProps, MRT_ColumnDef, MRT_PaginationState, MRT_RowSelectionState } from 'material-react-table';
 import { observer } from 'mobx-react-lite';
 import { FC, useEffect, useMemo, useState } from 'react';
 import { useStore } from '../../Libs/Stores';
 import { MedicineDefinitionViewModel } from '../../Libs/ViewModels/MedicineDefinitionViewModel';
 import DefaultLayout from "../Layouts/DefaultLayout";
-import { faCirclePlus, faTrash, faEdit } from '@fortawesome/free-solid-svg-icons'
+import { faCirclePlus, faTrash, faEdit, faDownload } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { AddMedicineModal } from './AddMedicineModal/AddMedicineModal';
 import MedicineUnitDefinitionAPI from '../../Libs/Models/MedicineUnitDefinitionAPI';
@@ -84,6 +84,11 @@ const DanhSachThuoc: FC<{}> = observer((props) => {
                 accessorFn: (row) => row.Code,
                 header: 'Mã thuốc',
                 size: 120,
+            },
+            {
+                accessorFn: (row) => row.CurrentQuantity,
+                header: 'Số lượng thuốc hiện tại',
+                size: 100,
             },
             {
                 accessorFn: (row) => sDanhSachThuoc.getTenMaThuoc(row.Unit || ""),

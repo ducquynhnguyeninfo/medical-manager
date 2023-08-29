@@ -27,7 +27,7 @@ class DanhSachThuocStore {
 
     loadMedicineList(page: number, size: number) {
         this.store.sLinear.set_isShow(true);
-        MedicineDefinitionAPI.getItems({ select: "ID,Title,Code,Unit,Description,Created", page: page, size: size, currentPageData: this.medicineData}).then(result => {
+        MedicineDefinitionAPI.getItems({ select: "*", page: page, size: size, currentPageData: this.medicineData}).then(result => {
             this.store.sLinear.set_isShow(false);
             this.set_medicineData(result || []);
         })

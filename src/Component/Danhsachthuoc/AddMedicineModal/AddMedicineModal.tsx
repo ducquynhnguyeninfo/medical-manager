@@ -36,6 +36,7 @@ export const AddMedicineModal: FC<{
     const handleAdd = () => {
         sLinear.set_isShow(true);
         if (medicineItem.ID == 0) {
+            medicineItem.CurrentQuantity = 0;
             MedicineDefinitionAPI.AddItem(medicineItem).then(result => {
                 sLinear.set_isShow(false);
                 if (result instanceof Error) {
