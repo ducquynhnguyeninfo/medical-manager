@@ -56,7 +56,7 @@ export const OutputMedicine: FC<{}> = observer((props) => {
 
     const handleSendToApprover = () => {
         sInputOutputMedicine.sendToApprover(ticket).then(result => {
-            if(result instanceof Error)  {
+            if (result instanceof Error) {
                 sModal.ShowErrorMessage(result.message);
             } else {
                 sModal.ShowSuccessMessage("Gửi duyệt thành công");
@@ -100,12 +100,12 @@ export const OutputMedicine: FC<{}> = observer((props) => {
                         <Typography variant="subtitle1" gutterBottom style={{ marginBottom: DataConstant.CONTAINER_PADDING, marginTop: DataConstant.CONTAINER_PADDING }}>Danh sách thuốc xuất</Typography>
                     </Grid>
                     <Grid item xs={12}>
-                        <MedicineInOutTable detailList={ticketDetails} ticketID={ticketID || "0"} onChange={handleMedicineTableChange}></MedicineInOutTable>
+                        <MedicineInOutTable detailList={ticketDetails} ticketID={ticketID || "0"} ticket={ticket} onChange={handleMedicineTableChange}></MedicineInOutTable>
                     </Grid>
                 </Grid>
             </Grid>
             <Stack justifyContent={"space-between"} direction="row" spacing={2} style={{ marginTop: DataConstant.CONTAINER_PADDING }}>
-            <Stack>
+                <Stack>
                     <Button color="inherit" variant="contained" onClick={() => navigate(routeConfig.NhapXuatThuoc.pattern)}>
                         {t("Quay lại danh sách")}
                     </Button>
@@ -114,9 +114,9 @@ export const OutputMedicine: FC<{}> = observer((props) => {
                     {(ticketDetails.filter(e => e.ID > 0).length > 0 && ticket.Status == InputOutputTicketStatus.CREATED) && (<Button color="secondary" variant="contained" disabled={sLinear.isShow} onClick={handleSendToApprover}>
                         {t("Gửi duyệt")}
                     </Button>)}
-                    <Button color="primary" variant="contained" disabled={sLinear.isShow} onClick={handleSaveTicket}>
+                    {ticket.Status == InputOutputTicketStatus.CREATED && (<Button color="primary" variant="contained" disabled={sLinear.isShow} onClick={handleSaveTicket}>
                         {t("Lưu phiếu xuất")}
-                    </Button>
+                    </Button>)}
                 </Stack>
             </Stack>
         </Paper>

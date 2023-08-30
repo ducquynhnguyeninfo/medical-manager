@@ -1,4 +1,4 @@
-import { Box, Tooltip, IconButton, Button, Dialog, DialogActions, DialogContent, DialogTitle, Stack, TextField, } from "@mui/material";
+import { Box, Tooltip, IconButton, Button, Dialog, DialogActions, DialogContent, DialogTitle, Stack, TextField, Alert} from "@mui/material";
 import MaterialReactTable, { MaterialReactTableProps, MRT_Row, MRT_ColumnDef } from "material-react-table";
 import { observer } from "mobx-react-lite";
 import { useState, useCallback, useMemo, FC, ChangeEvent, SyntheticEvent, useEffect } from "react";
@@ -34,7 +34,7 @@ export const MedicineTable: FC<{ detailList: PrescriptionViewModel[], appointmen
     };
 
     const loadMedicineData = (appointmentID: string) => {
-        PrescriptionAPI.getItems({ select: "*", filter: "AppointmentID eq " + appointmentID, currentPageData: null })
+        PrescriptionAPI.getItems({ select: "*", filter: "AppointmentID eq " + appointmentID + " and IsActive eq 1", currentPageData: null })
             .then(result => {
                 props.onChange(result.Data);
             });
@@ -161,7 +161,9 @@ export const CreateNewAccountModal = ({
     onClose,
     onSubmit,
 }: CreateModalProps) => {
-    const { sLinear } = useStore();
+    const { sLinear, sModal } = useStore();
+    const [medicineSelected, setMedicineSelected] = useState<MedicineDefinitionViewModel>(new MedicineDefinitionViewModel());
+    const [error, setError] = useState("");
     const [values, setValues] = useState<PrescriptionViewModel>(() =>
         columns.reduce((acc, column) => {
             acc[column.accessorKey ?? ''] = '';
@@ -171,12 +173,18 @@ export const CreateNewAccountModal = ({
     const { t } = useTranslation();
 
     useEffect(() => {
+        setError("");
         setValues(new PrescriptionViewModel())
     }, [open])
 
     const [medicineFilter, setMedicineFilter] = useState<MedicineDefinitionViewModel[]>([])
 
     const handleSubmit = () => {
+        if (medicineSelected.CurrentQuantity < values.Quantity) {
+            setError("Số lượng thuốc không đủ");
+            return;
+        }
+
         //put your validation logic here
         onSubmit(values);
         onClose();
@@ -193,7 +201,8 @@ export const CreateNewAccountModal = ({
 
     const handleMedicineSelected = (event: SyntheticEvent<Element, Event>, newValue: MedicineDefinitionViewModel | null) => {
         if (newValue != null) {
-            setValues({ ...values, MedicineCode: newValue.Code, MedicineTitle: newValue.Title, MedicineUnit: newValue.Unit, MedicineID: newValue.ID, Quantity: 0});
+            setMedicineSelected(newValue);
+            setValues({ ...values, MedicineCode: newValue.Code, MedicineTitle: newValue.Title, MedicineUnit: newValue.Unit, MedicineID: newValue.ID, Quantity: 0 });
         }
     }
 
@@ -207,6 +216,7 @@ export const CreateNewAccountModal = ({
         <Dialog open={open}>
             <DialogTitle textAlign="center">{t("Thêm thuốc")}</DialogTitle>
             <DialogContent style={{ paddingTop: DataConstant.CONTAINER_PADDING }}>
+                {error != "" && (<Alert severity="error" style={{ marginBottom: DataConstant.SPACE_BETWEEN_TITLE_CONTENT }}>{error}</Alert>)}
                 <form onSubmit={(e) => e.preventDefault()}>
                     <Stack
                         sx={{

@@ -11,6 +11,7 @@ export class ApprovalProcessViewModel extends BaseEntitySharePointItem {
     IsInput: boolean = false;
     Title: string = "";
     LinkPreview: string | null = null;
+    Reason: string | null = null;
     __metadata: any = {
         "type": "SP.Data.ApprovalProcessListItem"
     }

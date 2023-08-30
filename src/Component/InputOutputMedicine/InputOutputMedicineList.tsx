@@ -128,6 +128,8 @@ export const InputOutputMedicineList: FC<{}> = observer((props) => {
             return (<Chip label="Soạn thảo" color="default" variant="filled" />)
         } else if (status == InputOutputTicketStatus.APPROVED) {
             return (<Chip label="Đã duyệt" color="success" variant="filled" />)
+        } else if (status == InputOutputTicketStatus.REJECT) {
+            return (<Chip label="Bị từ chối" color="error" variant="filled" />)
         } else {
             return (<Chip label="Chờ duyệt" color="warning" variant="filled" />)
         }
@@ -220,7 +222,7 @@ export const InputOutputMedicineList: FC<{}> = observer((props) => {
                 }}
                 muiSelectCheckboxProps={({ row, table }) => {
                     //ẩn hiện checkbox
-                    if (row.original.Status == InputOutputTicketStatus.APPROVED || row.original.Status == InputOutputTicketStatus.WAITING_APPROVED)
+                    if (row.original.Status == InputOutputTicketStatus.APPROVED || row.original.Status == InputOutputTicketStatus.WAITING_APPROVED || row.original.Status == InputOutputTicketStatus.REJECT)
                         return {
                             disabled: true,
                         }

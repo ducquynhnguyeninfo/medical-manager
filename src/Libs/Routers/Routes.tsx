@@ -5,7 +5,6 @@ import { toPairs } from "lodash-es";
 
 import { Route } from 'react-router-dom';
 import RequiredAuth from "./RequiredAuth";
-import * as React from 'react';
 import DanhSachThuoc from '../../Component/Danhsachthuoc/DanhSachThuoc';
 import { Test } from '../../Component/Test/Index';
 import { LoadingPageComponent } from '../../Component/LoadingPageComponent/Index';
@@ -13,8 +12,8 @@ import { Login } from '../../Component/Login/Login';
 import { InputOutputMedicineList } from '../../Component/InputOutputMedicine/InputOutputMedicineList';
 import { InputMedicine } from '../../Component/InputOutputMedicine/InputMedicine/Index';
 import { OutputMedicine } from '../../Component/InputOutputMedicine/OutputMedicine/Index';
-import { AppointmentList } from '../../Component/InputOutputMedicine copy/AppointmentList';
-import { AddAppointment } from '../../Component/InputOutputMedicine copy/AddAppointment/Index';
+import { AppointmentList } from '../../Component/Appointment/AppointmentList';
+import { AddAppointment } from '../../Component/Appointment/AddAppointment/Index';
 
 export const homeRoute = createRouterState("home");
 export const notFound = createRouterState('notFound');

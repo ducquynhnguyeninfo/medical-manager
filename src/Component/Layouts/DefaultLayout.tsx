@@ -30,9 +30,9 @@ const DefaultLayout: React.FC<Props> = (props) => {
             <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <Box sx={{ display: 'flex' }}>
                     <CssBaseline />
-                    <div style={{width: DRAWER_WIDTH, position: "absolute", zIndex: 1200}}>
+                    {/* <div style={{width: DRAWER_WIDTH, position: "absolute", zIndex: 1200}}>
                         <img src={logo} alt="" style={{ height: "100px" }} />
-                    </div>
+                    </div> */}
                     <Header></Header>
                     <Linear top={"65px"} />
                     <SliderMenu></SliderMenu>

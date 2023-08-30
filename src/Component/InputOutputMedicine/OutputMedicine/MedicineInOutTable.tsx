@@ -1,4 +1,4 @@
-import { Box, Tooltip, IconButton, Button, Dialog, DialogActions, DialogContent, DialogTitle, Stack, TextField, } from "@mui/material";
+import { Box, Tooltip, IconButton, Button, Dialog, DialogActions, DialogContent, DialogTitle, Stack, TextField, Alert } from "@mui/material";
 import MaterialReactTable, { MaterialReactTableProps, MRT_Row, MRT_ColumnDef } from "material-react-table";
 import { observer } from "mobx-react-lite";
 import { useState, useCallback, useMemo, FC, ChangeEvent, SyntheticEvent, useEffect } from "react";
@@ -12,8 +12,10 @@ import { useTranslation } from "react-i18next";
 import { InputOutputTicketDetailViewModel } from "../../../Libs/ViewModels/InputOutputTicketDetailViewModel";
 import { useStore } from "../../../Libs/Stores";
 import { InputOutputTicketDetailAPI } from "../../../Libs/Models/InputOutputTicketDetailAPI";
+import { InputOutputTicketStatus } from "../../../Libs/Utils/InputOutputTicketStatusEnum";
+import { InputOutputTicketViewModel } from "../../../Libs/ViewModels/InputOutputTicketViewModel";
 
-export const MedicineInOutTable: FC<{ detailList: InputOutputTicketDetailViewModel[], ticketID: string, onChange: (data: InputOutputTicketDetailViewModel[]) => void }> = observer((props) => {
+export const MedicineInOutTable: FC<{ detailList: InputOutputTicketDetailViewModel[], ticketID: string, ticket: InputOutputTicketViewModel, onChange: (data: InputOutputTicketDetailViewModel[]) => void }> = observer((props) => {
     const [createModalOpen, setCreateModalOpen] = useState(false);
     const [validationErrors, setValidationErrors] = useState<{
         [cellId: string]: string;
@@ -32,9 +34,11 @@ export const MedicineInOutTable: FC<{ detailList: InputOutputTicketDetailViewMod
     };
 
     const loadMedicineData = (ticketId: string) => {
-        InputOutputTicketDetailAPI.getItems({ select: "MedicineCode,MedicineTitle,MedicineUnit,Quantity,MedicineID,Quantity,TicketID,MedicineQuantityBefore,ID", 
-                        filter: "TicketID eq " + ticketId, 
-                        currentPageData: null })
+        InputOutputTicketDetailAPI.getItems({
+            select: "MedicineCode,MedicineTitle,MedicineUnit,Quantity,MedicineID,Quantity,TicketID,MedicineQuantityBefore,ID",
+            filter: "TicketID eq " + ticketId,
+            currentPageData: null
+        })
             .then(result => {
                 props.onChange(result.Data);
             });
@@ -113,7 +117,7 @@ export const MedicineInOutTable: FC<{ detailList: InputOutputTicketDetailViewMod
                 enableRowActions={true}
                 onEditingRowSave={handleSaveRowEdits}
                 onEditingRowCancel={handleCancelRowEdits}
-                renderRowActions={({ row, table }) => (
+                renderRowActions={({ row, table }) => props.ticket.Status == InputOutputTicketStatus.CREATED ? (
                     <Box sx={{ display: 'flex', gap: '1rem', justifyContent: "space-around" }}>
                         {/* <Tooltip arrow placement="left" title="Edit">
                             <IconButton onClick={() => table.setEditingRow(row)}>
@@ -126,8 +130,8 @@ export const MedicineInOutTable: FC<{ detailList: InputOutputTicketDetailViewMod
                             </IconButton>
                         </Tooltip>
                     </Box>
-                )}
-                renderTopToolbarCustomActions={() => (
+                ) : (<></>)}
+                renderTopToolbarCustomActions={() => props.ticket.Status == InputOutputTicketStatus.CREATED ? (
                     <Button
                         color="secondary"
                         onClick={() => setCreateModalOpen(true)}
@@ -135,7 +139,7 @@ export const MedicineInOutTable: FC<{ detailList: InputOutputTicketDetailViewMod
                     >
                         Thêm thuốc
                     </Button>
-                )}
+                ) : (<></>)}
             />
             <CreateNewAccountModal
                 columns={columns}
@@ -171,12 +175,19 @@ export const CreateNewAccountModal = ({
     const { t } = useTranslation();
 
     useEffect(() => {
+        setError("");
         setValues(new InputOutputTicketDetailViewModel())
     }, [open])
 
     const [medicineFilter, setMedicineFilter] = useState<MedicineDefinitionViewModel[]>([])
+    const [medicineSelected, setMedicineSelected] = useState<MedicineDefinitionViewModel>(new MedicineDefinitionViewModel());
+    const [error, setError] = useState("");
 
     const handleSubmit = () => {
+        if (medicineSelected.CurrentQuantity < values.Quantity) {
+            setError("Số lượng thuốc không đủ");
+            return;
+        }
         //put your validation logic here
         onSubmit(values);
         onClose();
@@ -193,20 +204,16 @@ export const CreateNewAccountModal = ({
 
     const handleMedicineSelected = (event: SyntheticEvent<Element, Event>, newValue: MedicineDefinitionViewModel | null) => {
         if (newValue != null) {
+            setMedicineSelected(newValue);
             setValues({ ...values, MedicineCode: newValue.Code, MedicineTitle: newValue.Title, MedicineUnit: newValue.Unit, MedicineID: newValue.ID, MedicineQuantityBefore: newValue.CurrentQuantity || 0 })
         }
-    }
-
-    const isDisabled = (field: string | undefined) => {
-        if (field == "MedicineTitle" || field == "MedicineUnit")
-            return true;
-        return false;
     }
 
     return (
         <Dialog open={open}>
             <DialogTitle textAlign="center">Thêm thuốc</DialogTitle>
             <DialogContent style={{ paddingTop: DataConstant.CONTAINER_PADDING }}>
+                {error != "" && (<Alert severity="error" style={{ marginBottom: DataConstant.SPACE_BETWEEN_TITLE_CONTENT }}>{error}</Alert>)}
                 <form onSubmit={(e) => e.preventDefault()}>
                     <Stack
                         sx={{

@@ -8,6 +8,7 @@ import DanhSachThuocStore from "./QuanLyThuocListStore";
 import { InputOutputMedicineStore } from "./InputOutputMedicineStore";
 import { ModalStore } from "./ModalStore";
 import { AppointmentStore } from "./AppointmentStore";
+import UserPermissionAPI from "../Models/UserPermissionAPI";
 // import { routes, notFound } from "../Router/Routes";
 
 export class Store extends AuthorizedStore {
@@ -28,7 +29,14 @@ export class Store extends AuthorizedStore {
         this.sAppointment = new AppointmentStore(this);
         
         UserContext.getCurrentUser().then(result => {
-            this.set_userContext(result);
+            UserPermissionAPI.getItems({select : "*", filter: "Email eq '" + result?.Email + "'", currentPageData: null}).then(permission => {
+                let roles = permission.Data.map(e => e.Role);
+                if(result != null) {
+                    result.Roles = roles;
+                    this.set_userContext(result);
+                }
+            })
+            
         })
     }
     

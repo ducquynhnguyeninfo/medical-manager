@@ -8,7 +8,7 @@ export class CurrentUserViewModel extends BaseEntitySharePointItem {
         if(context.Roles == null) {
             return false;
         }
-
+        
         for(let i = 0; i < requiredRoles.length; i++) {
             if(context.Roles.indexOf(requiredRoles[i]) >= 0)
                 return true;

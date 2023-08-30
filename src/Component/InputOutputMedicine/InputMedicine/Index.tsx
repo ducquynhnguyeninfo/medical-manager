@@ -100,7 +100,7 @@ export const InputMedicine: FC<{}> = observer((props) => {
                         <Typography variant="subtitle1" gutterBottom style={{ marginBottom: DataConstant.CONTAINER_PADDING, marginTop: DataConstant.CONTAINER_PADDING }}>Danh sách thuốc nhập</Typography>
                     </Grid>
                     <Grid item xs={12}>
-                        <MedicineInOutTable detailList={ticketDetails} ticketID={ticketID || "0"} onChange={handleMedicineTableChange}></MedicineInOutTable>
+                        <MedicineInOutTable detailList={ticketDetails} ticketID={ticketID || "0"} ticket={ticket} onChange={handleMedicineTableChange}></MedicineInOutTable>
                     </Grid>
                 </Grid>
             </Grid>
@@ -114,9 +114,9 @@ export const InputMedicine: FC<{}> = observer((props) => {
                     {(ticketDetails.filter(e => e.ID > 0).length > 0 && ticket.Status == InputOutputTicketStatus.CREATED) && (<Button color="secondary" variant="contained" disabled={sLinear.isShow} onClick={handleSendToApprover}>
                         {t("Gửi duyệt")}
                     </Button>)}
-                    <Button color="primary" variant="contained" disabled={sLinear.isShow} onClick={handleSaveTicket}>
+                    {ticket.Status == InputOutputTicketStatus.CREATED && (<Button color="primary" variant="contained" disabled={sLinear.isShow} onClick={handleSaveTicket}>
                         {t("Lưu phiếu xuất")}
-                    </Button>
+                    </Button>)}
                 </Stack>
             </Stack>
         </Paper>

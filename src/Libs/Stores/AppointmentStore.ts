@@ -22,8 +22,8 @@ export class AppointmentStore {
     loadList(page: number, size: number) {
         this.store.sLinear.set_isShow(true);
         AppointmentAPI.getItems({
-            select: "*"
-            , page: page, size: size, currentPageData: this.listData
+            select: "*",
+            page: page, size: size, currentPageData: this.listData
         }).then(result => {
             this.store.sLinear.set_isShow(false);
             this.listData = result;
@@ -41,10 +41,12 @@ export class AppointmentStore {
 
     savePrescription(item: AppointmentViewModel, prescriptions: PrescriptionViewModel[]) {
         //select all old data
-        let oldDataGetHandler = PrescriptionAPI.getItems({ select: "ID", currentPageData: null });
+        let oldDataGetHandler = PrescriptionAPI.getItems({ select: "*", filter: "AppointmentID eq " + item.ID, currentPageData: null });
 
         let deleteHandler = (item: PrescriptionViewModel, callback: any) => {
-            PrescriptionAPI.DeleteItem(item).then(result => {
+            item.IsActive = false;
+            item.IsHandled = false; //set false to job run again
+            PrescriptionAPI.UpdateItem(item).then(result => {
                 if (result instanceof Error)
                     callback(result.message);
                 else
@@ -53,6 +55,7 @@ export class AppointmentStore {
         }
 
         let addHandler = (item: PrescriptionViewModel, callback: any) => {
+            item.IsActive = true;
             PrescriptionAPI.AddItem(item).then(result => {
                 if (result instanceof Error)
                     callback(result.message);

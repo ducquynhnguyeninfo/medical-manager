@@ -60,7 +60,8 @@ export class InputOutputMedicineStore {
         } else {
             url += routeConfig.XuatThuoc.pattern;
         }
-        url = url?.replaceAll("//","/");
+
+        url = url?.replaceAll("//", "/").replace("http:/", "http://").replace("https:/", "https://");
         
         let step = new ApprovalProcessViewModel();
         step.Created = new Date();
@@ -68,8 +69,9 @@ export class InputOutputMedicineStore {
         step.IsInput = ticket.IsInput;
         step.ObjectID = ticket.ID;
         step.RequesterEmail = ticket.InputUser;
+        step.Reason = ticket.Reason;
+        step.Title = ticket.IsInput ? "Yêu cầu nhập thuốc cần kiểm tra" : "Yêu cầu xuất thuốc cần kiểm tra";
         step.LinkPreview = url?.replace(":ticketID", ticket.ID.toString()) || ""
-        step.ApprovedDate = new Date();
         
         //update ticket
         ticket.Status = InputOutputTicketStatus.WAITING_APPROVED;

@@ -12,8 +12,10 @@ import { useTranslation } from "react-i18next";
 import { InputOutputTicketDetailViewModel } from "../../../Libs/ViewModels/InputOutputTicketDetailViewModel";
 import { useStore } from "../../../Libs/Stores";
 import { InputOutputTicketDetailAPI } from "../../../Libs/Models/InputOutputTicketDetailAPI";
+import { InputOutputTicketViewModel } from "../../../Libs/ViewModels/InputOutputTicketViewModel";
+import { InputOutputTicketStatus } from "../../../Libs/Utils/InputOutputTicketStatusEnum";
 
-export const MedicineInOutTable: FC<{ detailList: InputOutputTicketDetailViewModel[], ticketID: string, onChange: (data: InputOutputTicketDetailViewModel[]) => void }> = observer((props) => {
+export const MedicineInOutTable: FC<{ detailList: InputOutputTicketDetailViewModel[], ticketID: string, ticket: InputOutputTicketViewModel, onChange: (data: InputOutputTicketDetailViewModel[]) => void }> = observer((props) => {
     const [createModalOpen, setCreateModalOpen] = useState(false);
     const [validationErrors, setValidationErrors] = useState<{
         [cellId: string]: string;
@@ -32,9 +34,11 @@ export const MedicineInOutTable: FC<{ detailList: InputOutputTicketDetailViewMod
     };
 
     const loadMedicineData = (ticketId: string) => {
-        InputOutputTicketDetailAPI.getItems({ select: "MedicineCode,MedicineTitle,MedicineUnit,Quantity,MedicineID,Quantity,TicketID,MedicineQuantityBefore,ID", 
-                        filter: "TicketID eq " + ticketId, 
-                        currentPageData: null })
+        InputOutputTicketDetailAPI.getItems({
+            select: "MedicineCode,MedicineTitle,MedicineUnit,Quantity,MedicineID,Quantity,TicketID,MedicineQuantityBefore,ID",
+            filter: "TicketID eq " + ticketId,
+            currentPageData: null
+        })
             .then(result => {
                 props.onChange(result.Data);
             });
@@ -113,21 +117,23 @@ export const MedicineInOutTable: FC<{ detailList: InputOutputTicketDetailViewMod
                 enableRowActions={true}
                 onEditingRowSave={handleSaveRowEdits}
                 onEditingRowCancel={handleCancelRowEdits}
-                renderRowActions={({ row, table }) => (
-                    <Box sx={{ display: 'flex', gap: '1rem', justifyContent: "space-around" }}>
-                        {/* <Tooltip arrow placement="left" title="Edit">
+                renderRowActions={({ row, table }) => {
+                    if (props.ticket.Status == InputOutputTicketStatus.CREATED)
+                        return (<Box sx={{ display: 'flex', gap: '1rem', justifyContent: "space-around" }}>
+                            {/* <Tooltip arrow placement="left" title="Edit">
                             <IconButton onClick={() => table.setEditingRow(row)}>
                                 <FontAwesomeIcon icon={faEdit}></FontAwesomeIcon>
                             </IconButton>
                         </Tooltip> */}
-                        <Tooltip arrow placement="right" title="Delete">
-                            <IconButton color="error" onClick={() => handleDeleteRow(row)}>
-                                <FontAwesomeIcon icon={faTrash}></FontAwesomeIcon>
-                            </IconButton>
-                        </Tooltip>
-                    </Box>
-                )}
-                renderTopToolbarCustomActions={() => (
+                            <Tooltip arrow placement="right" title="Delete">
+                                <IconButton color="error" onClick={() => handleDeleteRow(row)}>
+                                    <FontAwesomeIcon icon={faTrash}></FontAwesomeIcon>
+                                </IconButton>
+                            </Tooltip>
+                        </Box>)
+                    else (<></>)
+                }}
+                renderTopToolbarCustomActions={() => props.ticket.Status == InputOutputTicketStatus.CREATED ? (
                     <Button
                         color="secondary"
                         onClick={() => setCreateModalOpen(true)}
@@ -135,7 +141,7 @@ export const MedicineInOutTable: FC<{ detailList: InputOutputTicketDetailViewMod
                     >
                         Thêm thuốc
                     </Button>
-                )}
+                ) : (<></>)}
             />
             <CreateNewAccountModal
                 columns={columns}

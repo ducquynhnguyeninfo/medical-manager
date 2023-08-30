@@ -8,7 +8,9 @@ export class PrescriptionViewModel extends BaseEntitySharePointItem {
     MedicineUnit: string | undefined = undefined;
     Quantity: number = 0;
     Created: Date | undefined = undefined;
-
+    IsActive: boolean = true;
+    IsHandled: boolean = false;
+    
     __metadata: any = {
         "type": "SP.Data.PrescriptionListItem"
     }
