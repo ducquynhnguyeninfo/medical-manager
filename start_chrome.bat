@@ -1,0 +1,1 @@
+./chrome.exe --disable-web-security --user-data-dir="./chrome_dev" http://localhost:3000/sites/e-form-test/quanlythuoc/SitePages/Admin.aspx
