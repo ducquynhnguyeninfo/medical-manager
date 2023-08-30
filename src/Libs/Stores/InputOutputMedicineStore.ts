@@ -15,20 +15,28 @@ export class InputOutputMedicineStore {
     listData: PagedData<InputOutputTicketViewModel>;
     listTicketDetail: InputOutputTicketDetailViewModel[] = [];
     ticketID: string = ""
+    ticket: InputOutputTicketViewModel = new InputOutputTicketViewModel();
+
     constructor(private store: Store) {
         makeObservable(this, {
             listData: observable,
             ticketID: observable,
+            ticket: observable,
             listTicketDetail: observable,
             loadSoLuongThuocChoTungTicket: action,
             set_listData: action,
             set_listTicketDetail: action,
             delete_selectedMedicine: action,
             updateMedicineTable: action,
-            set_ticketID: action
+            set_ticketID: action,
+            set_ticket: action
         })
 
         this.listData = new PagedData();
+    }
+
+    set_ticket(data: InputOutputTicketViewModel) {
+        this.ticket = data;
     }
 
     loadList(page: number, size: number) {
@@ -166,7 +174,16 @@ export class InputOutputMedicineStore {
         return InputOutputTicketDetailAPI.getItems({ select: "ID", filter: "TicketID eq " + ticketID, currentPageData: null });
     }
 
+    loadTicket(ticketID: string) {
+        InputOutputTicketAPI.GetItemByID(ticketID, { select: "*", currentPageData: null })
+            .then(result => {
+                console.log('hi', result)
+                this.set_ticket(result || new InputOutputTicketViewModel());
+            })
+    }
+
     async updateMedicineTable(medicines: InputOutputTicketDetailViewModel[]) {
+        let root = this;
         let addItemHandler = (item: InputOutputTicketDetailViewModel, callback: any) => {
             InputOutputTicketDetailAPI.AddItem(item).then(result => {
                 if(result == null || result instanceof Error) {
@@ -179,7 +196,6 @@ export class InputOutputMedicineStore {
 
         //delete old data
         this.store.sLinear.set_isShow(true);
-        let root = this;
         this.deleteAllOldMedicineTable(root.ticketID || "").then(error => {
             //insert new
             async.each(medicines, addItemHandler, function (err) {
@@ -188,6 +204,7 @@ export class InputOutputMedicineStore {
                     root.store.sModal.ShowErrorMessage(err.message);
                 } else {
                     root.store.sModal.ShowSuccessMessage("Cập nhật thành công");
+                    root.loadTicket(root.ticketID || "");
                 }
             });
         })

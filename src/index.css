@@ -17,5 +17,9 @@ input[type=text] {
   background-color: none;
   background: none !important;
   color: currentcolor !important;
-  /* padding: 8.5px 14px; */
+  padding: 8.5px 14px !important;
+}
+
+input[type=button], input[type=reset], input[type=submit], button {
+  min-width: 0px !important;
 }

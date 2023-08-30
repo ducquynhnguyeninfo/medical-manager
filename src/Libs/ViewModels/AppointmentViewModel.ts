@@ -1,18 +1,20 @@
+import { Expose } from "class-transformer";
 import { BaseEntitySharePointItem } from "./BaseEntitySharePointItem"
 
 export class AppointmentViewModel extends BaseEntitySharePointItem {
-    Title: string = "";
-    EmployeeNumber: string | null = null;
-    EmployeeName: string | null = null;
-    AppointmentDate: Date | null = null;
-    Symptom: string | null = null;
-    DoctorEmail: string | null = null;
-    MethodOfTreatment: string | null = null;
-    BeginTreatment: Date| null = null;
-    EndTreatment: Date | null = null;
-    Note: string | null = null;
-    Division: string | null = null;
-    Department: string | null = null;
+    @Expose() Title: string = "";
+    @Expose() EmployeeName: string | null = null;
+    @Expose() EmployeeNumber: string | null = null;
+    @Expose() AppointmentDate: Date | null = null;
+    @Expose() Symptom: string | null = null;
+    @Expose() DoctorEmail: string | null = null;
+    @Expose() BeginTreatment: Date | null = null;
+    @Expose() EndTreatment: Date | null = null;
+    @Expose() Note: string | null = null;
+    @Expose() Division: string | null = null;
+    @Expose() Department: string | null = null;
+    @Expose() IsUseMedicine: boolean = true;
+    @Expose() IsRest: boolean = false;
 
     __metadata: any = {
         "type": "SP.Data.AppointmentListItem"
