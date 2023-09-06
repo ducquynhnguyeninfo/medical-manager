@@ -1,21 +1,17 @@
 import { faCirclePlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Stack, Grid, Button, Chip, IconButton } from "@mui/material";
+import { Stack, Grid, Button, IconButton } from "@mui/material";
 import MaterialReactTable, { MRT_ColumnDef, MRT_PaginationState, MRT_RowSelectionState } from "material-react-table";
 import { observer } from "mobx-react-lite";
 import moment from "moment";
 import { FC, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import InputOutputTicketAPI from "../../Libs/Models/InputOutputTicketAPI";
 import { routeConfig } from "../../Libs/Routers/Routes";
 import { useStore } from "../../Libs/Stores";
 import { DataConstant } from "../../Libs/Utils/DataConstant";
-import { InputOutputTicketStatus } from "../../Libs/Utils/InputOutputTicketStatusEnum";
-import { InputOutputTicketViewModel } from "../../Libs/ViewModels/InputOutputTicketViewModel";
 import DefaultLayout from "../Layouts/DefaultLayout";
-import { faEdit, faArrowRight, faTrash } from "@fortawesome/free-solid-svg-icons";
-import Swal from "sweetalert2";
+import { faEdit } from "@fortawesome/free-solid-svg-icons";
 import { AppointmentViewModel } from "../../Libs/ViewModels/AppointmentViewModel";
 
 export const AppointmentList: FC<{}> = observer((props) => {

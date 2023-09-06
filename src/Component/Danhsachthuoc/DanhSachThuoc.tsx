@@ -31,7 +31,7 @@ const DanhSachThuoc: FC<{}> = observer((props) => {
             MedicineUnitDefinitionAPI.getItems().then(result => {
                 sLinear.set_isShow(false);
                 sDanhSachThuoc.set_medicineUnitDefinitions(result.Data || [])
-            })
+            });
         }
     }, [])
 

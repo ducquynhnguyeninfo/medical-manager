@@ -69,13 +69,13 @@ export const MainListItems: React.FC<{}> = observer(() => {
         <ListItemIcon>
           <FontAwesomeIcon icon={faChartPie}></FontAwesomeIcon>
         </ListItemIcon>
-        <ListItemText primary="Xuât báo cáo thuốc" onClick={() => redirect(routeConfig.Appointment.pattern)} />
+        <ListItemText primary="Xuât báo cáo thuốc" onClick={() => redirect(routeConfig.MedicineReport.pattern)} />
       </ListItemButton>
       <ListItemButton>
         <ListItemIcon>
           <FontAwesomeIcon icon={faChartPie}></FontAwesomeIcon>
         </ListItemIcon>
-        <ListItemText primary="Xuât báo cáo bệnh" onClick={() => redirect(routeConfig.Appointment.pattern)} />
+        <ListItemText primary="Xuât báo cáo bệnh" onClick={() => redirect(routeConfig.PatientReport.pattern)} />
       </ListItemButton>
     </React.Fragment>)
 })

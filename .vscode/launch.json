@@ -1,0 +1,44 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Chrome",
+            "request": "launch",
+            "type": "chrome",
+            "runtimeExecutable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+            "url": "http://localhost:3000/sites/e-form-test/quanlythuoc/SitePages/Admin.aspx/report-medicine",
+            "webRoot": "${workspaceFolder}",
+            "trace": true,
+            "runtimeArgs": [
+                "--disable-web-security",
+                "--user-data-dir=${workspaceFolder}/chrome_dev",
+                "http://localhost:3000/sites/e-form-test/quanlythuoc/SitePages/Admin.aspx"
+            ]
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Node",
+            "port": 3000,
+            "protocol": "inspector",
+            "runtimeExecutable": "npm",
+            "runtimeArgs": [
+                "run",
+                "start"
+            ],
+            "console": "integratedTerminal"
+        }
+    ],
+    "compounds": [
+        {
+            "name": "Full-stack",
+            "configurations": [
+                "Node",
+                "Chrome"
+            ]
+        }
+    ]
+}

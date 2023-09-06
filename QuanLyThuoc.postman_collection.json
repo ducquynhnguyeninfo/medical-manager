@@ -1,0 +1,144 @@
+{
+	"info": {
+		"_postman_id": "ad88b0c6-fba8-4a19-8874-caabc5d703aa",
+		"name": "QuanLyThuoc",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Tao thuoc",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Cookie",
+						"value": "rtFa=oLsG9RqNoZPa0N92r0hHSrTwm9TCELgi6Ji99QDYrs0mM0M0RUZGNjUtMzE2Qi00QkNDLUIyNEEtNERGQTMzMEI1RUI2IzEzMzM2NzE3NTk0MTY1MjMwNSM2RjNDRDFBMC03MERFLTIwMDAtODJCMi1GNEEwNzQyOTg1MDAjUEhJRElOSCU0MFRIUC5DT00uVk5XAxBAa3SRgkGlbDNoMn27HTPI4OXB53VMzHln+Sukii09iQwd0Hc0sRI0ccD7jvHATJXrV/IYW1bOfcPyk9orUS6f6h+je2Y3G+Kbh/A+5YpVVFnSv3zPPDqNfZnon5PFfzKvnY2ysID/FGtuLAknrcsrNM1X3DdlUBtX5dBywsZcy+/pssTFFJkqCEPFWIUo+RpEYZf7zM12KLKh/SYWU8kMpJEi3fQSGgHlCg1xZTooC3Y6IxreBAXM6FDKP0Jk39CEDr4MbzPLfyU6lMlMnp37nI3CwOkJ1QV6Mni5yn3vQmVvM4JdszGhDy9Tl9myEaW7daZ1IiHwb//JMYYjkgAAAA==; SIMI=eyJzdCI6MH0=; ScaleCompatibilityDeviceId=30829329-8df1-4816-84ea-bd446b20f64c; WSS_FullScreenMode=false; MicrosoftApplicationsTelemetryDeviceId=b308072d-836f-452c-b132-dabbf300c2d4; WordWacDataCenter=PSG4; FedAuth=77u/PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz48U1A+VjEyLDBoLmZ8bWVtYmVyc2hpcHwxMDAzMjAwMTZiNTdlN2Y3QGxpdmUuY29tLDAjLmZ8bWVtYmVyc2hpcHxwaGlkaW5oQHRocC5jb20udm4sMTMzMzY3MTc1OTEwMDAwMDAwLDEzMzM2NzA5MDI3MDAwMDAwMCwxMzMzNzMyMzUxMjc0MDkxNjIsMjAzLjIwNS41OS4yMTAsMywzYzRlZmY2NS0zMTZiLTRiY2MtYjI0YS00ZGZhMzMwYjVlYjYsLDBjMzhkZGQ2LWMwYjctNGRlYS1iYjA0LWIwYzRkMjhlNmY4ZSw2ZjNjZDFhMC03MGRlLTIwMDAtODJiMi1mNGEwNzQyOTg1MDAsNGNlMmQxYTAtNTA3OS0yMDAwLTgyYjItZjQ1N2U2ZGFmNWU3LCwwLDEzMzM2OTE4NjA4OTU0NDI1MywxMzMzNzE3NDIwODk1NDQyNTMsLCxleUpqWVhCdmJHbGtjMTlzWVhSbFltbHVaQ0k2SWx0Y0lqbGlaV1k1TkRrMkxUTmxNVGd0TkRJM1lpMDRNMlkzTFRkallqRXpPR0ppTkdVNE9Gd2lMRndpTWpjd01qWXlNamN0TlRrd09TMDBPREl4TFRrNU9USXRNRGs1TlRSaU5EQmhaR0V3WENJc1hDSTFPV1V6TW1VMU15MW1NV1JqTFRSall6Z3RPV1ZoWlMweVl6ZzNaVGd5TldSa1kyVmNJaXhjSWpVNU16RXhaR0ptTFRFMlpHVXRORFUzWmkxaE1HRTFMV1prTXpVM1pERm1NakpoTkZ3aVhTSXNJbmh0YzE5all5STZJbHRjSWtOUU1Wd2lYU0lzSW5odGMxOXpjMjBpT2lJeElpd2ljSEpsWm1WeWNtVmtYM1Z6WlhKdVlXMWxJam9pY0docFpHbHVhRUIwYUhBdVkyOXRMblp1SWl3aWRYUnBJam9pVmxwaGJFOTZkVFZJYTA5VVNHaFdWVGR0WjBkQlFTSjksMjY1MDQ2Nzc0Mzk5OTk5OTk5OSwxMzMzNjcxNzU5MzAwMDAwMDAsMDNiZWY5MDctOGVlYi00NjcyLWI1OWItNzdhZGY4YzQ2ZTYzLCwsLCwsMCwsaXhsREtZNGk0TlNuK2dBelJIcWg2ZDZpSG5uOTJQdTUweDFBU1NSb2p2Z1ZlaS9zVzhPOVIzZm9sYnFYeERkWXRXRnBjRUlFRDhjZGNaNytGdXEvOEV4SDRRTlhlR2krM01KZnAzMldmMnZDSTdWbGR0Qk5BcmlBZUdUT1JNYW44NlNvN1N2MHM5R1hSeFpLalg0ZklOQXB3MVBNeUxzUG5DTHViV0JEeUN0OTljUEp2U2dQOTczbTdaTDB1RFQ5OEJiMnVyeldXazBDSkFUU0J5UzNlS0RUaUwrMmpmWk81MTQ5S3cwVmFvQ1RaL3BwbUJEd0Q2d05qMm1TakdtNGZMZXNDZWJXQXlWeEFpVzJoK2E2NS94M0dsODBBMStPK1NBbnpqcXg1Rnp6ZlRsZGxMYXo1MHNqdEM2ZUgxQzhCcGdTcTl4aEM0aDBCUUx1V1ovRlFRPT08L1NQPg==; ExcelWacDataCenter=PSG4; WacDataCenter=PSG4; ai_session=uQ56Aa5W+K4OPf2QjAnWsL|1692426969925|1692427048525; MSFPC=GUID=07c5c099b60c4d7eabbb565f6a5479ba&HASH=07c5&LV=202308&V=4&LU=1692427050366; odbn=1",
+						"type": "default"
+					},
+					{
+						"key": "X-RequestDigest",
+						"value": "0x743567E5863B526E3A304470785FAF109C0DE373FC93EC04D136A3E116552D4B8ADC2C0B753290F992DFC08355195F8EDE336B3C64D702F84CE1308384B8E913,21 Aug 2023 03:21:18 -0000",
+						"type": "default"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"Code\": \"sdf\",\r\n    \"Title\": \"sdf\",\r\n    \"Unit\": \"GOI\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://tanhiepphat.sharepoint.com/sites/e-form-test/quanlythuoc/_api/web/lists/getByTitle('MedicineDefinition')/items",
+					"protocol": "https",
+					"host": [
+						"tanhiepphat",
+						"sharepoint",
+						"com"
+					],
+					"path": [
+						"sites",
+						"e-form-test",
+						"quanlythuoc",
+						"_api",
+						"web",
+						"lists",
+						"getByTitle('MedicineDefinition')",
+						"items"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "contextinfo",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Cookie",
+						"value": "rtFa=oLsG9RqNoZPa0N92r0hHSrTwm9TCELgi6Ji99QDYrs0mM0M0RUZGNjUtMzE2Qi00QkNDLUIyNEEtNERGQTMzMEI1RUI2IzEzMzM2NzE3NTk0MTY1MjMwNSM2RjNDRDFBMC03MERFLTIwMDAtODJCMi1GNEEwNzQyOTg1MDAjUEhJRElOSCU0MFRIUC5DT00uVk5XAxBAa3SRgkGlbDNoMn27HTPI4OXB53VMzHln+Sukii09iQwd0Hc0sRI0ccD7jvHATJXrV/IYW1bOfcPyk9orUS6f6h+je2Y3G+Kbh/A+5YpVVFnSv3zPPDqNfZnon5PFfzKvnY2ysID/FGtuLAknrcsrNM1X3DdlUBtX5dBywsZcy+/pssTFFJkqCEPFWIUo+RpEYZf7zM12KLKh/SYWU8kMpJEi3fQSGgHlCg1xZTooC3Y6IxreBAXM6FDKP0Jk39CEDr4MbzPLfyU6lMlMnp37nI3CwOkJ1QV6Mni5yn3vQmVvM4JdszGhDy9Tl9myEaW7daZ1IiHwb//JMYYjkgAAAA==; SIMI=eyJzdCI6MH0=; ScaleCompatibilityDeviceId=30829329-8df1-4816-84ea-bd446b20f64c; WSS_FullScreenMode=false; MicrosoftApplicationsTelemetryDeviceId=b308072d-836f-452c-b132-dabbf300c2d4; WordWacDataCenter=PSG4; FedAuth=77u/PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz48U1A+VjEyLDBoLmZ8bWVtYmVyc2hpcHwxMDAzMjAwMTZiNTdlN2Y3QGxpdmUuY29tLDAjLmZ8bWVtYmVyc2hpcHxwaGlkaW5oQHRocC5jb20udm4sMTMzMzY3MTc1OTEwMDAwMDAwLDEzMzM2NzA5MDI3MDAwMDAwMCwxMzMzNzMyMzUxMjc0MDkxNjIsMjAzLjIwNS41OS4yMTAsMywzYzRlZmY2NS0zMTZiLTRiY2MtYjI0YS00ZGZhMzMwYjVlYjYsLDBjMzhkZGQ2LWMwYjctNGRlYS1iYjA0LWIwYzRkMjhlNmY4ZSw2ZjNjZDFhMC03MGRlLTIwMDAtODJiMi1mNGEwNzQyOTg1MDAsNGNlMmQxYTAtNTA3OS0yMDAwLTgyYjItZjQ1N2U2ZGFmNWU3LCwwLDEzMzM2OTE4NjA4OTU0NDI1MywxMzMzNzE3NDIwODk1NDQyNTMsLCxleUpqWVhCdmJHbGtjMTlzWVhSbFltbHVaQ0k2SWx0Y0lqbGlaV1k1TkRrMkxUTmxNVGd0TkRJM1lpMDRNMlkzTFRkallqRXpPR0ppTkdVNE9Gd2lMRndpTWpjd01qWXlNamN0TlRrd09TMDBPREl4TFRrNU9USXRNRGs1TlRSaU5EQmhaR0V3WENJc1hDSTFPV1V6TW1VMU15MW1NV1JqTFRSall6Z3RPV1ZoWlMweVl6ZzNaVGd5TldSa1kyVmNJaXhjSWpVNU16RXhaR0ptTFRFMlpHVXRORFUzWmkxaE1HRTFMV1prTXpVM1pERm1NakpoTkZ3aVhTSXNJbmh0YzE5all5STZJbHRjSWtOUU1Wd2lYU0lzSW5odGMxOXpjMjBpT2lJeElpd2ljSEpsWm1WeWNtVmtYM1Z6WlhKdVlXMWxJam9pY0docFpHbHVhRUIwYUhBdVkyOXRMblp1SWl3aWRYUnBJam9pVmxwaGJFOTZkVFZJYTA5VVNHaFdWVGR0WjBkQlFTSjksMjY1MDQ2Nzc0Mzk5OTk5OTk5OSwxMzMzNjcxNzU5MzAwMDAwMDAsMDNiZWY5MDctOGVlYi00NjcyLWI1OWItNzdhZGY4YzQ2ZTYzLCwsLCwsMCwsaXhsREtZNGk0TlNuK2dBelJIcWg2ZDZpSG5uOTJQdTUweDFBU1NSb2p2Z1ZlaS9zVzhPOVIzZm9sYnFYeERkWXRXRnBjRUlFRDhjZGNaNytGdXEvOEV4SDRRTlhlR2krM01KZnAzMldmMnZDSTdWbGR0Qk5BcmlBZUdUT1JNYW44NlNvN1N2MHM5R1hSeFpLalg0ZklOQXB3MVBNeUxzUG5DTHViV0JEeUN0OTljUEp2U2dQOTczbTdaTDB1RFQ5OEJiMnVyeldXazBDSkFUU0J5UzNlS0RUaUwrMmpmWk81MTQ5S3cwVmFvQ1RaL3BwbUJEd0Q2d05qMm1TakdtNGZMZXNDZWJXQXlWeEFpVzJoK2E2NS94M0dsODBBMStPK1NBbnpqcXg1Rnp6ZlRsZGxMYXo1MHNqdEM2ZUgxQzhCcGdTcTl4aEM0aDBCUUx1V1ovRlFRPT08L1NQPg==; ExcelWacDataCenter=PSG4; WacDataCenter=PSG4; ai_session=uQ56Aa5W+K4OPf2QjAnWsL|1692426969925|1692427048525; MSFPC=GUID=07c5c099b60c4d7eabbb565f6a5479ba&HASH=07c5&LV=202308&V=4&LU=1692427050366; odbn=1",
+						"type": "default"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "https://tanhiepphat.sharepoint.com/sites/e-form-test/quanlythuoc/_api/contextinfo",
+					"protocol": "https",
+					"host": [
+						"tanhiepphat",
+						"sharepoint",
+						"com"
+					],
+					"path": [
+						"sites",
+						"e-form-test",
+						"quanlythuoc",
+						"_api",
+						"contextinfo"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Count total item of List",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Cookie",
+						"value": "rtFa=oLsG9RqNoZPa0N92r0hHSrTwm9TCELgi6Ji99QDYrs0mM0M0RUZGNjUtMzE2Qi00QkNDLUIyNEEtNERGQTMzMEI1RUI2IzEzMzM2NzE3NTk0MTY1MjMwNSM2RjNDRDFBMC03MERFLTIwMDAtODJCMi1GNEEwNzQyOTg1MDAjUEhJRElOSCU0MFRIUC5DT00uVk5XAxBAa3SRgkGlbDNoMn27HTPI4OXB53VMzHln+Sukii09iQwd0Hc0sRI0ccD7jvHATJXrV/IYW1bOfcPyk9orUS6f6h+je2Y3G+Kbh/A+5YpVVFnSv3zPPDqNfZnon5PFfzKvnY2ysID/FGtuLAknrcsrNM1X3DdlUBtX5dBywsZcy+/pssTFFJkqCEPFWIUo+RpEYZf7zM12KLKh/SYWU8kMpJEi3fQSGgHlCg1xZTooC3Y6IxreBAXM6FDKP0Jk39CEDr4MbzPLfyU6lMlMnp37nI3CwOkJ1QV6Mni5yn3vQmVvM4JdszGhDy9Tl9myEaW7daZ1IiHwb//JMYYjkgAAAA==; SIMI=eyJzdCI6MH0=; ScaleCompatibilityDeviceId=30829329-8df1-4816-84ea-bd446b20f64c; WSS_FullScreenMode=false; MicrosoftApplicationsTelemetryDeviceId=b308072d-836f-452c-b132-dabbf300c2d4; WordWacDataCenter=PSG4; ExcelWacDataCenter=PSG4; WacDataCenter=PSG4; MSFPC=GUID=07c5c099b60c4d7eabbb565f6a5479ba&HASH=07c5&LV=202308&V=4&LU=1692427050366; FedAuth=77u/PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz48U1A+VjEyLDBoLmZ8bWVtYmVyc2hpcHwxMDAzMjAwMTZiNTdlN2Y3QGxpdmUuY29tLDAjLmZ8bWVtYmVyc2hpcHxwaGlkaW5oQHRocC5jb20udm4sMTMzMzY3MTc1OTEwMDAwMDAwLDEzMzM2NzA5MDI3MDAwMDAwMCwxMzMzNzQ3ODYxNjA3MzkzODQsMjAzLjIwNS41OS4yMTAsMywzYzRlZmY2NS0zMTZiLTRiY2MtYjI0YS00ZGZhMzMwYjVlYjYsLDBjMzhkZGQ2LWMwYjctNGRlYS1iYjA0LWIwYzRkMjhlNmY4ZSw2ZjNjZDFhMC03MGRlLTIwMDAtODJiMi1mNGEwNzQyOTg1MDAsMzc3NmQyYTAtYTA3Zi0yMDAwLThhMzQtOTM5NGUwM2I5NzYwLCwwLDEzMzM3MDczNjkxNjM3OTAyNiwxMzMzNzMyOTI5MTYzNzkwMjYsLCxleUpqWVhCdmJHbGtjMTlzWVhSbFltbHVaQ0k2SWx0Y0lqbGlaV1k1TkRrMkxUTmxNVGd0TkRJM1lpMDRNMlkzTFRkallqRXpPR0ppTkdVNE9Gd2lMRndpTWpjd01qWXlNamN0TlRrd09TMDBPREl4TFRrNU9USXRNRGs1TlRSaU5EQmhaR0V3WENJc1hDSTFPV1V6TW1VMU15MW1NV1JqTFRSall6Z3RPV1ZoWlMweVl6ZzNaVGd5TldSa1kyVmNJaXhjSWpVNU16RXhaR0ptTFRFMlpHVXRORFUzWmkxaE1HRTFMV1prTXpVM1pERm1NakpoTkZ3aVhTSXNJbmh0YzE5all5STZJbHRjSWtOUU1Wd2lYU0lzSW5odGMxOXpjMjBpT2lJeElpd2ljSEpsWm1WeWNtVmtYM1Z6WlhKdVlXMWxJam9pY0docFpHbHVhRUIwYUhBdVkyOXRMblp1SWl3aWRYUnBJam9pVmxwaGJFOTZkVFZJYTA5VVNHaFdWVGR0WjBkQlFTSjksMjY1MDQ2Nzc0Mzk5OTk5OTk5OSwxMzMzNjcxNzU5MzAwMDAwMDAsMDNiZWY5MDctOGVlYi00NjcyLWI1OWItNzdhZGY4YzQ2ZTYzLCwsLCwsMCwsR3VRcTlueHVodFNjaTN2cUd6ZDlERlU1KzB0NHZIcWNWK3MxaWJibHVCQjRqSFNIT2lUb2dzbHFtaFJiSXRsdlhFVnFoaDJxcUQvWEpVVEdJcVk3K3NuSFdrRjBTMkk2QS9OTDhCc3JUcU5QMmRXVU1yWEZtY1BHZGZwUlpaN0l3azN1a29rclB1ODRUV1UzZDA4bExwZjhCZGlwLzd6aGRrY1Y0Zm0wY3V5aUxPRWJXN0NJTlE4N0MyNWd6ZFphUVQ1bFVJcTVuc0pHUzBEcDdoQ2Uyd1c4OWI4amVFM29vSVRDdUZaRHVpbzdBMTNHM2VMYkR4OTVpcWpMaWIvTTVJVHZ6cHlPdFhaaGR0WS9DYU00Yk5LZVB2VUdEWTN2ZFVVSTY5NU9LbGJERWRmVkZqN3RoaEJSWkZrd0VaSGZIMXoycXBRdGR1UHhRRVh0TWVMQmFnPT08L1NQPg==; SPWorkLoadAttribution=Url=https://tanhiepphat.sharepoint.com/sites/e-form-test/quanlythuoc/SitePages/Admin.aspx/Home&AppTitle=WebPartPageHomePage",
+						"type": "default"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json;odata=verbose",
+						"type": "default"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json;odata=verbose",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "https://tanhiepphat.sharepoint.com/sites/e-form-test/quanlythuoc/_api/web/lists/getByTitle('MedicineDefinition')/ItemCount",
+					"protocol": "https",
+					"host": [
+						"tanhiepphat",
+						"sharepoint",
+						"com"
+					],
+					"path": [
+						"sites",
+						"e-form-test",
+						"quanlythuoc",
+						"_api",
+						"web",
+						"lists",
+						"getByTitle('MedicineDefinition')",
+						"ItemCount"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
