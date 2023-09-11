@@ -6,7 +6,7 @@ import { useStore } from "../../Libs/Stores";
 import { Stack, Grid, Box, Paper, Button, Container, Typography, Card, IconButton } from "@mui/material";
 import DefaultLayout from "../Layouts/DefaultLayout";
 import MaterialReactTable, { MRT_ColumnDef, MRT_PaginationState, MRT_RowSelectionState } from "material-react-table";
-
+import * as XLSX from 'xlsx';
 import "./index.css";
 import { MedicineReportItemViewModel } from "../../Libs/ViewModels/MedicineReportItemViewModel";
 import moment from "moment";
@@ -23,8 +23,6 @@ import dayjs from "dayjs";
 export const ReportMedicineComponent: FC<{}> = observer((props) => {
     const { userContext, sRequiredAuth, sImportExportService } = useStore();
     const navigate = useNavigate();
-
-    // const importExportMedicineService = new ImportExportReportService();
     const columns = useMemo<MRT_ColumnDef<MedicineReportItemViewModel>[]>(
         () =>
             [
@@ -39,12 +37,12 @@ export const ReportMedicineComponent: FC<{}> = observer((props) => {
                     size: 120,
                 },
                 {
-                    accessorFn: (row) => row.Title,
+                    accessorFn: (row) => row.MedicineTitle,
                     header: t('Danh mục thuốc'),
                     size: 120,
                 },
                 {
-                    accessorFn: (row) => row.Description,
+                    accessorFn: (row) => row.UsageDescription,
                     header: t('Công dụng'),
                     size: 120,
                 },
@@ -163,6 +161,13 @@ export const ReportMedicineComponent: FC<{}> = observer((props) => {
                             />
                         </Grid>
                         <Button variant="contained" onClick={() => {
+                            
+                            const worksheet = XLSX.utils.json_to_sheet(sImportExportService.pagedData.Data);
+                            const workbook = XLSX.utils.book_new();
+                            XLSX.utils.book_append_sheet(workbook, worksheet, "Medicine Import-Export");
+                            
+                            /* create an XLSX file and try to save to Medicine Import-Export.xlsx */
+                            XLSX.writeFile(workbook, "Medicine Import-Export.xlsx", { compression: true });
 
                         }}>Xuất báo cáo thuốc
                         </Button>

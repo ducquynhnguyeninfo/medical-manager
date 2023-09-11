@@ -4,8 +4,8 @@ import { Moment } from "moment";
 
 export class MedicineReportItemViewModel extends BaseEntitySharePointItem {
     Code: string | undefined;
-    Title: string | undefined;
-    Description: string | undefined;
+    MedicineTitle: string | undefined;
+    UsageDescription: string | undefined;
     Unit: string | undefined;
     BeginningInventory: number = 0;
     ExpiryDate: Moment | undefined;
@@ -17,9 +17,9 @@ export class MedicineReportItemViewModel extends BaseEntitySharePointItem {
     "__metadata": any = { 'type': 'SP.Data.MedicineReportItemListItem' }
 
     constructor(
-        Title: any,
+        MedicineTitle: any,
         Code: any,
-        Description: any,
+        UsageDescription: any,
         Unit: any,
         BeginningInventory: any,
         ExpiryDate: any,
@@ -30,9 +30,9 @@ export class MedicineReportItemViewModel extends BaseEntitySharePointItem {
     ) {
         super();
 
-        this.Title = Title;
+        this.MedicineTitle = MedicineTitle;
         this.Code = Code;
-        this.Description = Description;
+        this.UsageDescription = UsageDescription;
         this.Unit = Unit;
         this.BeginningInventory = BeginningInventory;
         this.ExpiryDate = ExpiryDate;
@@ -42,9 +42,9 @@ export class MedicineReportItemViewModel extends BaseEntitySharePointItem {
         this.Note = Note;
 
         makeObservable(this, {
-            Title: observable,
+            MedicineTitle: observable,
             Code: observable,
-            Description: observable,
+            UsageDescription: observable,
             Unit: observable,
             BeginningInventory: observable,
             ExpiryDate: observable,

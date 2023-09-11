@@ -1,3 +1,4 @@
+import { retry } from "async";
 import { DataConstant } from "../../Utils/DataConstant";
 import { PagedData } from "../../ViewModels/PagedData";
 
@@ -38,20 +39,47 @@ export enum ComparisionOperator {
 }
 
 export class FilterBuilder extends Object {
+    private static readonly conjunc_and: string = 'and';
+    private static readonly conjunc_or: string = 'or';
+    
     filter: string = "";
 
-    constructor(comparison: ConditionBuilder) {
-        super();
-        this.filter = comparison.build();
+    static beginWith(comparison: ConditionBuilder): FilterBuilder {
+        let builder = new FilterBuilder();
+        builder.filter = comparison.build();
+        return builder;
     }
     
+    constructor() {
+        super();
+    }
+
+    // begin(comparation: ConditionBuilder): FilterBuilder {
+    //     if (this.filter.trim().length > 0) {
+    //         throw new Error("Filter has begun already!")
+    //     }
+    //     this.filter += `${comparation.build()}`;
+    //     return this;
+    // }
+    
     and(comparation: ConditionBuilder): FilterBuilder {
-        this.filter += ` and ${comparation.build()}`;
+        
+        if (this.filter.trim().length === 0) {
+            this.filter += `${comparation.build()}`;
+        } else {
+
+            this.filter += ` ${FilterBuilder.conjunc_and} ${comparation.build()}`;
+        }
         return this;
     }
     
     or(comparation: ConditionBuilder): FilterBuilder {
-        this.filter += ` or ${comparation.build()}`;
+        if (this.filter.trim().length === 0) {
+            this.filter += `${comparation.build()}`;
+        } else {
+
+            this.filter += ` ${FilterBuilder.conjunc_or} ${comparation.build()}`;
+        }
         return this;
     }
 

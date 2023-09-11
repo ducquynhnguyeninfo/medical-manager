@@ -9,6 +9,7 @@ export class PrescriptionViewModel extends BaseEntitySharePointItem {
     Quantity: number = 0;
     Created: Date | undefined = undefined;
     IsActive: boolean = true;
+    HandledDate: Date | undefined = undefined;
     IsHandled: boolean = false;
     
     __metadata: any = {
