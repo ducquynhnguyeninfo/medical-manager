@@ -7,7 +7,7 @@ export class AppointmentViewModel extends BaseEntitySharePointItem {
     AppointmentDate: Date | null = null;
     Symptom: string | null = null;
     DoctorEmail: string | null = null;
-    MethodOfTreatment: string | null = null;
+    IsUseMedicine: boolean = false;
     BeginTreatment: Date| null = null;
     EndTreatment: Date | null = null;
     Note: string | null = null;

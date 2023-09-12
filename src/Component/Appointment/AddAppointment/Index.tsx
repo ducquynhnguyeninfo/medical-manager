@@ -29,7 +29,7 @@ export const AddAppointment: FC<{}> = observer((props) => {
             newItem.AppointmentDate = new Date();
             newItem.BeginTreatment = moment().toDate();
             newItem.EndTreatment = moment().add("minutes", 5).toDate();
-            newItem.MethodOfTreatment = "Dùng thuốc"
+            newItem.IsUseMedicine = true;
             setAppointment(newItem);
         } else {
             loadAppointment(appointmentID || "");
@@ -137,10 +137,10 @@ export const AddAppointment: FC<{}> = observer((props) => {
                     </Grid>
                     <Grid item xs={12} md={3}>
                         <Select
-                            labelId="demo-simple-select-label" id="demo-simple-select" value={appointment.MethodOfTreatment || "Dùng thuốc"} label="Age"
+                            labelId="demo-simple-select-label" id="demo-simple-select" value={appointment.IsUseMedicine || "Dùng thuốc"} label="Age"
                             fullWidth size="small"
                             onChange={(event) => {
-                                setAppointment({ ...appointment, MethodOfTreatment: event.target.value as string })
+                                setAppointment({ ...appointment, IsUseMedicine: event.target.value !== "" })
                             }}
                         >
                             <MenuItem key="dungthuoc" value={"Dùng thuốc"}>{t("Dùng thuốc")}</MenuItem>

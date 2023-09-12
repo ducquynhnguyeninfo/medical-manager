@@ -13,7 +13,7 @@ import moment from "moment";
 import { faEdit } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { t } from "i18next";
-import ImportExportReportService from "../../Libs/Stores/ImportExport/ImportExportReportService";
+import MedicineImportExportReportService from "../../Libs/Stores/ReportServices/MedicineImportExportReportService";
 import { DatePicker } from "@mui/x-date-pickers";
 import { DataConstant } from "../../Libs/Utils/DataConstant";
 import { data } from "jquery";
@@ -164,10 +164,10 @@ export const ReportMedicineComponent: FC<{}> = observer((props) => {
                             
                             const worksheet = XLSX.utils.json_to_sheet(sImportExportService.pagedData.Data);
                             const workbook = XLSX.utils.book_new();
-                            XLSX.utils.book_append_sheet(workbook, worksheet, "Medicine Import-Export");
+                            XLSX.utils.book_append_sheet(workbook, worksheet, "Medicine");
                             
                             /* create an XLSX file and try to save to Medicine Import-Export.xlsx */
-                            XLSX.writeFile(workbook, "Medicine Import-Export.xlsx", { compression: true });
+                            XLSX.writeFile(workbook, "Báo cáo nhập xuất thuốc.xlsx", { compression: true });
 
                         }}>Xuất báo cáo thuốc
                         </Button>

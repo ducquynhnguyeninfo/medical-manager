@@ -36,7 +36,7 @@ class CompoundData {
     unit: string | undefined;
     is_approved: boolean | undefined;
 }
-class ImportExportReportService {
+class MedicineImportExportReportService {
     pagedData: PagedData<MedicineReportItemViewModel>;
 
     constructor(private store: Store) {
@@ -275,5 +275,5 @@ class ImportExportReportService {
 
 }
 
-export default ImportExportReportService
+export default MedicineImportExportReportService
 

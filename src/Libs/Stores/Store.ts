@@ -9,7 +9,8 @@ import { InputOutputMedicineStore } from "./InputOutputMedicineStore";
 import { ModalStore } from "./ModalStore";
 import { AppointmentStore } from "./AppointmentStore";
 import UserPermissionAPI from "../Models/UserPermissionAPI";
-import ImportExportReportService from "./ImportExport/ImportExportReportService";
+import MedicineImportExportReportService from "./ReportServices/MedicineImportExportReportService";
+import PatientReportService from "./ReportServices/PatientReportService";
 // import { routes, notFound } from "../Router/Routes";
 
 export class Store extends AuthorizedStore {
@@ -28,7 +29,8 @@ export class Store extends AuthorizedStore {
         this.sInputOutputMedicine = new InputOutputMedicineStore(this);
         this.sModal = new ModalStore(this);
         this.sAppointment = new AppointmentStore(this);
-        this.sImportExportService = new ImportExportReportService(this);
+        this.sImportExportService = new MedicineImportExportReportService(this);
+        this.sPatientService = new PatientReportService(this);
         
         UserContext.getCurrentUser().then(result => {
             UserPermissionAPI.getItems({select : "*", filter: "Email eq '" + result?.Email + "'", currentPageData: null}).then(permission => {
@@ -49,5 +51,6 @@ export class Store extends AuthorizedStore {
     sInputOutputMedicine: InputOutputMedicineStore;
     sModal: ModalStore;
     sAppointment: AppointmentStore;
-    sImportExportService: ImportExportReportService;
+    sImportExportService: MedicineImportExportReportService;
+    sPatientService: PatientReportService;
 }
