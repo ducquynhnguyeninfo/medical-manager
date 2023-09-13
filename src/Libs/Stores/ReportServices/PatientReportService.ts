@@ -81,7 +81,6 @@ class PatientReportService {
 
         console.log(reportData);
 
-        // this.pagedData = this.convertToPagedData(reportData);
         this.setPagedData(this.convertToPagedData(reportData));
     }
 

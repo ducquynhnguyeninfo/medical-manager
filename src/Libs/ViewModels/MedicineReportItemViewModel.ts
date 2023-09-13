@@ -2,7 +2,8 @@ import { makeObservable, observable } from "mobx";
 import { BaseEntitySharePointItem } from "./BaseEntitySharePointItem";
 import { Moment } from "moment";
 
-export class MedicineReportItemViewModel extends BaseEntitySharePointItem {
+export class MedicineReportItemViewModel {
+    ID: number = 0;
     oder: string | undefined;
     Code: string | undefined;
     MedicineTitle: string | undefined;
@@ -29,8 +30,6 @@ export class MedicineReportItemViewModel extends BaseEntitySharePointItem {
         EndingInventory: any,
         Note: any,
     ) {
-        super();
-
         this.MedicineTitle = MedicineTitle;
         this.Code = Code;
         this.UsageDescription = UsageDescription;
