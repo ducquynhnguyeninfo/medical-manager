@@ -212,6 +212,7 @@ class MedicineImportExportReportService {
 
         // Code, MedicineTitle, UsageDescription, Unit, BeginningInventory, ExpiryDate, ImportNumber, ExportNumber, EndingInventory, Note
         let reportData: MedicineReportItemViewModel[] = [];
+        let count = 0;
         groupedMedicine.forEach((val: CompoundData[], key: string, map: Map<string, CompoundData[]>) => {
             if (val.length == 0)
                 return;
@@ -251,8 +252,18 @@ class MedicineImportExportReportService {
                     exportNumber += (e.changed_value ??= 0);
                 }
             });
-
-            reportData.push(new MedicineReportItemViewModel(beginningInventory.medicine_title, beginningInventory.medicine_code, beginningInventory.medicine_desc, beginningInventory.unit, beginningInventoryNumber, undefined, importNumber, exportNumber, endingInventoryNumber, ""));
+            count+=1;
+            reportData.push(new MedicineReportItemViewModel(count, 
+                beginningInventory.medicine_title,
+                 beginningInventory.medicine_code, 
+                 beginningInventory.medicine_desc, 
+                 beginningInventory.unit, 
+                 beginningInventoryNumber,
+                  undefined, 
+                  importNumber, 
+                  exportNumber, 
+                  endingInventoryNumber,
+                   ""));
         });
 
         console.log(reportData);

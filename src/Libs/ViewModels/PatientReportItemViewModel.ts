@@ -3,7 +3,6 @@ import { BaseEntitySharePointItem } from "./BaseEntitySharePointItem";
 import { Moment } from "moment";
 
 export class PatientReportItemViewModel {
-    ID: number = 0;
     order: number | null;
     date: Date | null;
     patientName: string | null;
@@ -15,8 +14,6 @@ export class PatientReportItemViewModel {
     restTreatment: boolean = false;
     medicineTreatment: boolean = false;
     note: string | null;
-
-    // "__metadata": any = { 'type': 'SP.Data.MedicineReportItemListItem' }
 
     constructor(
         order: number,
@@ -43,7 +40,6 @@ export class PatientReportItemViewModel {
         this.restTreatment = restTreatment;
         this.medicineTreatment = medicineTreatment;
         this.note = note;
-
 
         makeObservable(this, {
             order: observable,

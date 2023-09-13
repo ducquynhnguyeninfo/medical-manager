@@ -75,7 +75,7 @@ class PatientReportService {
         let count = 0;
         appointmentData.forEach(a => {
  
-            count+=1;
+            count += 1;
             reportData.push(new PatientReportItemViewModel(count, a.AppointmentDate, a.EmployeeName, a.Department, a.EmployeeNumber, a.BeginTreatment, a.EndTreatment, a.Symptom, true, a.IsUseMedicine, a.Note));
         });
 

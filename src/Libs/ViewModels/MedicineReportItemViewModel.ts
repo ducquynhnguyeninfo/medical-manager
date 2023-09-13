@@ -3,8 +3,7 @@ import { BaseEntitySharePointItem } from "./BaseEntitySharePointItem";
 import { Moment } from "moment";
 
 export class MedicineReportItemViewModel {
-    ID: number = 0;
-    oder: string | undefined;
+    Order: number = 0;
     Code: string | undefined;
     MedicineTitle: string | undefined;
     UsageDescription: string | undefined;
@@ -16,9 +15,10 @@ export class MedicineReportItemViewModel {
     EndingInventory: number = 0;
     Note: string | undefined;
 
-    "__metadata": any = { 'type': 'SP.Data.MedicineReportItemListItem' }
+    // "__metadata": any = { 'type': 'SP.Data.MedicineReportItemListItem' }
 
     constructor(
+        order: number,
         MedicineTitle: any,
         Code: any,
         UsageDescription: any,
@@ -30,18 +30,10 @@ export class MedicineReportItemViewModel {
         EndingInventory: any,
         Note: any,
     ) {
-        this.MedicineTitle = MedicineTitle;
-        this.Code = Code;
-        this.UsageDescription = UsageDescription;
-        this.Unit = Unit;
-        this.BeginningInventory = BeginningInventory;
-        this.ExpiryDate = ExpiryDate;
-        this.ImportNumber = ImportNumber;
-        this.ExportNumber = ExportNumber;
-        this.EndingInventory = EndingInventory;
-        this.Note = Note;
+       
 
         makeObservable(this, {
+            Order: observable,
             MedicineTitle: observable,
             Code: observable,
             UsageDescription: observable,
@@ -53,5 +45,17 @@ export class MedicineReportItemViewModel {
             EndingInventory: observable,
             Note: observable,
         })
+
+        this.Order = order,
+        this.MedicineTitle = MedicineTitle;
+        this.Code = Code;
+        this.UsageDescription = UsageDescription;
+        this.Unit = Unit;
+        this.BeginningInventory = BeginningInventory;
+        this.ExpiryDate = ExpiryDate;
+        this.ImportNumber = ImportNumber;
+        this.ExportNumber = ExportNumber;
+        this.EndingInventory = EndingInventory;
+        this.Note = Note;
     }
 }

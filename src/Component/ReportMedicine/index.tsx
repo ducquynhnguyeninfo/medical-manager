@@ -27,7 +27,7 @@ export const ReportMedicineComponent: FC<{}> = observer((props) => {
         () =>
             [
                 {
-                    accessorFn: (row) => row.ID,
+                    accessorFn: (row) => row.Order,
                     header: t('Số thứ tự'),
                     size: 40,
                 },
