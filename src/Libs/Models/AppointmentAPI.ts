@@ -38,8 +38,8 @@ export class AppointmentAPI {
         if (error)
             return null;
 
-        data = plainToClass(AppointmentViewModel, data);
-        return data;
+        let parsedata = plainToClass(AppointmentViewModel, data, {excludeExtraneousValues: true});
+        return parsedata;
     }
 
     static async UpdateItem(item: AppointmentViewModel) {

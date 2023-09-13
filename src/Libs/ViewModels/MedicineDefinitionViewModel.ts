@@ -9,6 +9,7 @@ export class MedicineDefinitionViewModel extends BaseEntitySharePointItem {
     CurrentQuantity: number = 0;
     CreatedBy: string | undefined;
     CreatedAt: Moment | undefined;
+    IsActive: boolean = true;
     __metadata: any = {
         "type": "SP.Data.MedicineDefinitionListItem"
     }

@@ -229,15 +229,17 @@ export const CreateNewAccountModal = ({
                             id="combo-box-demo"
                             key="MedicineCode"
                             fullWidth
+                            size="small"
                             options={medicineFilter}
                             getOptionLabel={(option: MedicineDefinitionViewModel) => option.Title || ""}
                             onChange={handleMedicineSelected}
-                            renderInput={(params) => <TextField  {...params} label="Mã thuốc" InputLabelProps={{}} onChange={handleMedicineCodeChange} />}
+                            renderInput={(params) => <TextField  {...params} size="small" label="Mã thuốc" InputLabelProps={{}} onChange={handleMedicineCodeChange} />}
                         />
                         <TextField
                             key="MedicineTitle"
                             label="Tên thuốc"
                             name="MedicineTitle"
+                            size="small"
                             disabled={true}
                             value={values["MedicineTitle"] || ""}
                             type={"text"}
@@ -247,6 +249,7 @@ export const CreateNewAccountModal = ({
                             key="MedicineUnit"
                             label="Đơn vị"
                             name="MedicineUnit"
+                            size="small"
                             disabled={true}
                             value={values["MedicineUnit"] || ""}
                             type={"text"}
@@ -256,6 +259,7 @@ export const CreateNewAccountModal = ({
                             key="Quantity"
                             label="Số lượng"
                             name="Quantity"
+                            size="small"
                             value={values["Quantity"] || ""}
                             type={"number"}
                             fullWidth

@@ -27,7 +27,7 @@ class DanhSachThuocStore {
 
     loadMedicineList(page: number, size: number) {
         this.store.sLinear.set_isShow(true);
-        MedicineDefinitionAPI.getItems({ select: "*", page: page, size: size, currentPageData: this.medicineData}).then(result => {
+        MedicineDefinitionAPI.getItems({ select: "*", filter: "IsActive eq 1", page: page, size: size, currentPageData: this.medicineData}).then(result => {
             this.store.sLinear.set_isShow(false);
             this.set_medicineData(result || []);
         })
@@ -44,7 +44,8 @@ class DanhSachThuocStore {
     async delete_selectedMedicine(selectedItems: Array<MedicineDefinitionViewModel>): Promise<Error | null> {
 
         let deleteHandle = (item: MedicineDefinitionViewModel, callback: any) => {
-            MedicineDefinitionAPI.DeleteItem(item).then(error => {
+            item.IsActive = false;
+            MedicineDefinitionAPI.UpdateItem(item).then(error => {
                 if (error)
                     callback(error.message);
                 else
@@ -89,7 +90,7 @@ class DanhSachThuocStore {
     }
 
     async editItem(item: MedicineDefinitionViewModel){
-        return MedicineDefinitionAPI.saveItem(item)
+        return MedicineDefinitionAPI.UpdateItem(item)
     }
 
 }

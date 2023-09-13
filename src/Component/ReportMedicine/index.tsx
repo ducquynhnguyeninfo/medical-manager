@@ -18,6 +18,7 @@ import { DatePicker } from "@mui/x-date-pickers";
 import { DataConstant } from "../../Libs/Utils/DataConstant";
 import { data } from "jquery";
 import dayjs from "dayjs";
+import React from "react";
 
 
 export const ReportMedicineComponent: FC<{}> = observer((props) => {

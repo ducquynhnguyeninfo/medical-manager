@@ -25,7 +25,7 @@ export const MedicineInOutTable: FC<{ detailList: InputOutputTicketDetailViewMod
     useEffect(() => {
         if (props.ticketID != "0")
             loadMedicineData(props.ticketID);
-    }, [props.ticketID])
+    }, [props.ticketID, props.ticket])
 
     const handleCreateNewRow = (values: InputOutputTicketDetailViewModel) => {
         values.TicketID = parseInt(props.ticketID);
@@ -226,6 +226,7 @@ export const CreateNewAccountModal = ({
                             id="combo-box-demo"
                             key="MedicineCode"
                             fullWidth
+                            size="small"
                             options={medicineFilter}
                             getOptionLabel={(option: MedicineDefinitionViewModel) => option.Title || ""}
                             onChange={handleMedicineSelected}
@@ -235,6 +236,7 @@ export const CreateNewAccountModal = ({
                             key="MedicineTitle"
                             label="Tên thuốc"
                             name="MedicineTitle"
+                            size="small"
                             disabled={true}
                             value={values["MedicineTitle"] || ""}
                             type={"text"}
@@ -247,6 +249,7 @@ export const CreateNewAccountModal = ({
                             key="MedicineUnit"
                             label="Đơn vị"
                             name="MedicineUnit"
+                            size="small"
                             disabled={true}
                             value={values["MedicineUnit"] || ""}
                             type={"text"}
@@ -258,6 +261,7 @@ export const CreateNewAccountModal = ({
                         <TextField
                             key="Quantity"
                             label="Số lượng"
+                            size="small"
                             name="Quantity"
                             value={values["Quantity"] || ""}
                             type={"number"}

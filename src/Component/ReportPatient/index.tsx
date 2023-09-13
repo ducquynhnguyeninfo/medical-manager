@@ -15,6 +15,7 @@ import { DataConstant } from "../../Libs/Utils/DataConstant";
 import { data } from "jquery";
 import dayjs from "dayjs";
 import { PatientReportItemViewModel } from "../../Libs/ViewModels/PatientReportItemViewModel";
+import React from "react";
 
 
 export const ReportPatientComponent: FC<{}> = observer((props) => {

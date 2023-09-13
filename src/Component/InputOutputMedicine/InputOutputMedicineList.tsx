@@ -213,6 +213,7 @@ export const InputOutputMedicineList: FC<{}> = observer((props) => {
                 data={sInputOutputMedicine.listData.Data || []}
                 rowCount={sInputOutputMedicine.listData.Total}
                 enableRowSelection
+                muiSelectAllCheckboxProps={{disabled: true}}
                 onRowSelectionChange={setRowSelection}
                 positionToolbarAlertBanner="bottom"
                 onPaginationChange={setPagination}

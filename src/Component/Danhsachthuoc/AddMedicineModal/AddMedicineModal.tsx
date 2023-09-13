@@ -93,6 +93,7 @@ export const AddMedicineModal: FC<{
                         label={t("Tên thuốc")}
                         type="text"
                         fullWidth
+                        size="small"
                         value={medicineItem.Title || ""}
                         variant="standard"
                         onChange={(event) => {
@@ -106,6 +107,7 @@ export const AddMedicineModal: FC<{
                         margin="dense"
                         id="Code"
                         label={t("Mã thuốc")}
+                        size="small"
                         type="text"
                         fullWidth
                         variant="standard"
@@ -119,6 +121,7 @@ export const AddMedicineModal: FC<{
                     <TextField
                         autoFocus
                         margin="dense"
+                        size="small"
                         id="Description"
                         label={t("Mô tả")}
                         type="text"
@@ -139,7 +142,7 @@ export const AddMedicineModal: FC<{
                             onChange={(event: SelectChangeEvent) => {
                                 setMedicineItem({ ...medicineItem, Unit: event.target.value || "" })
                             }}
-                            size="medium"
+                            size="small"
                             label={t("Đơn vị tính")}
                         >
                             {props.medicineUnitList.map(item => {

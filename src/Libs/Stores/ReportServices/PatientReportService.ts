@@ -76,7 +76,7 @@ class PatientReportService {
         appointmentData.forEach(a => {
  
             count += 1;
-            reportData.push(new PatientReportItemViewModel(count, a.AppointmentDate, a.EmployeeName, a.Department, a.EmployeeNumber, a.BeginTreatment, a.EndTreatment, a.Symptom, true, a.IsUseMedicine, a.Note));
+            reportData.push(new PatientReportItemViewModel(count, a.AppointmentDate, a.EmployeeName, a.Department, a.EmployeeNumber, a.BeginTreatment, a.EndTreatment, a.Symptom, a.IsRest, a.IsUseMedicine, a.Note));
         });
 
         console.log(reportData);

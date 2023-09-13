@@ -173,9 +173,9 @@ class MedicineImportExportReportService {
             return [];
         }
 
-        let importExportTransactions = [];
+        let importExportTransactions : MedicineTransactionViewModel[] = [];
         let importExportFilterBuilder = new FilterBuilder();
-        let appointmentTransactions = [];
+        let appointmentTransactions : MedicineTransactionViewModel[]= [];
         let appointmentFilterBuilder = new FilterBuilder();
 
         transactionReportData.forEach((e) => {

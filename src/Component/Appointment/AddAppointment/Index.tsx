@@ -1,4 +1,4 @@
-import { Button, Grid, MenuItem, Paper, Select, Stack, TextField, Typography } from "@mui/material";
+import { Button, Checkbox, FormControlLabel, FormGroup, Grid, MenuItem, Paper, Select, Stack, TextField, Typography } from "@mui/material";
 import { DatePicker, TimePicker } from "@mui/x-date-pickers";
 import async from "async";
 import dayjs from "dayjs";
@@ -15,6 +15,7 @@ import { AppointmentViewModel } from "../../../Libs/ViewModels/AppointmentViewMo
 import { PrescriptionViewModel } from "../../../Libs/ViewModels/PrescriptionViewModel";
 import DefaultLayout from "../../Layouts/DefaultLayout";
 import { MedicineTable } from "./MedicineTable";
+import React from "react";
 
 export const AddAppointment: FC<{}> = observer((props) => {
     const [appointment, setAppointment] = useState<AppointmentViewModel>(new AppointmentViewModel());
@@ -30,6 +31,7 @@ export const AddAppointment: FC<{}> = observer((props) => {
             newItem.BeginTreatment = moment().toDate();
             newItem.EndTreatment = moment().add("minutes", 5).toDate();
             newItem.IsUseMedicine = true;
+            newItem.IsRest = false;
             setAppointment(newItem);
         } else {
             loadAppointment(appointmentID || "");
@@ -45,13 +47,14 @@ export const AddAppointment: FC<{}> = observer((props) => {
 
     const handleSaveTicket = () => {
         sLinear.set_isShow(true);
+        console.log(appointment);
         sAppointment.saveAppointment(appointment).then(result => {
             sLinear.set_isShow(false);
-            if(result instanceof Error) {
+            if (result instanceof Error) {
                 sModal.ShowErrorMessage(result.message);
             } else {
                 let id = result?.ID || 0;
-                if(result == null)
+                if (result == null)
                     id = parseInt(appointmentID || "0") || 0;
 
                 prescription.forEach(e => {
@@ -61,7 +64,7 @@ export const AddAppointment: FC<{}> = observer((props) => {
                 sLinear.set_isShow(true);
                 sAppointment.savePrescription(appointment, prescription).then(prescriptionResult => {
                     sLinear.set_isShow(false);
-                    if(prescriptionResult instanceof Error) {
+                    if (prescriptionResult instanceof Error) {
                         sModal.ShowErrorMessage(prescriptionResult.message);
                     } else {
                         sModal.ShowSuccessMessage("Lưu thành công");
@@ -125,7 +128,7 @@ export const AddAppointment: FC<{}> = observer((props) => {
                         />
                     </Grid>
                     <Grid item xs={12} md={3}>
-                        <TimePicker 
+                        <TimePicker
                             label="Thời gian kết thúc điều trị" slotProps={{ textField: { size: "small", fullWidth: true } }} format="hh:mm" value={dayjs(appointment.EndTreatment)}
                             onChange={(newValue) => {
                                 if (newValue != null && appointment.AppointmentDate != null) {
@@ -135,17 +138,11 @@ export const AddAppointment: FC<{}> = observer((props) => {
                             }}
                         />
                     </Grid>
-                    <Grid item xs={12} md={3}>
-                        <Select
-                            labelId="demo-simple-select-label" id="demo-simple-select" value={appointment.IsUseMedicine || "Dùng thuốc"} label="Age"
-                            fullWidth size="small"
-                            onChange={(event) => {
-                                setAppointment({ ...appointment, IsUseMedicine: event.target.value !== "" })
-                            }}
-                        >
-                            <MenuItem key="dungthuoc" value={"Dùng thuốc"}>{t("Dùng thuốc")}</MenuItem>
-                            <MenuItem key="namnghi" value={"Nằm nghỉ"}>{t("Nằm nghỉ")}</MenuItem>
-                        </Select>
+                    <Grid item xs={12} md={6}>
+                        <FormGroup sx={{ flexDirection: "row" }}>
+                            <FormControlLabel control={<Checkbox checked={appointment.IsUseMedicine} onChange={event => setAppointment({ ...appointment, IsUseMedicine: event.target.checked })} />} label="Dùng thuốc" />
+                            <FormControlLabel control={<Checkbox checked={appointment.IsRest} onChange={event => setAppointment({ ...appointment, IsRest: event.target.checked })} />} label="Nằm nghỉ" />
+                        </FormGroup>
                     </Grid>
                     <Grid item xs={12} md={12}>
                         <TextField id="standard-basic" label="Triệu chứng" fullWidth size="small" />

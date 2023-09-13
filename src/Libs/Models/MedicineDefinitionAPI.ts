@@ -34,7 +34,7 @@ export default class MedicineDefinitionAPI {
         else return null;
     }
 
-    static async saveItem(item: MedicineDefinitionViewModel) {
+    static async UpdateItem(item: MedicineDefinitionViewModel) {
         let [error,] = await ApiBase.updateItem(ApiBase.BASE_URI, MedicineDefinitionAPI.LIST_NAME, item);
         if (error)
             return error;
