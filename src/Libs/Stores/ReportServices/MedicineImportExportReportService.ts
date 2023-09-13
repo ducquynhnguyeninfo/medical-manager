@@ -250,7 +250,7 @@ class MedicineImportExportReportService {
                 } else {
                     exportNumber += (e.changed_value ??= 0);
                 }
-            })
+            });
 
             reportData.push(new MedicineReportItemViewModel(beginningInventory.medicine_title, beginningInventory.medicine_code, beginningInventory.medicine_desc, beginningInventory.unit, beginningInventoryNumber, undefined, importNumber, exportNumber, endingInventoryNumber, ""));
         });

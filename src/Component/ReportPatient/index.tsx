@@ -154,7 +154,7 @@ export const ReportPatientComponent: FC<{}> = observer((props) => {
                             />
                         </Grid>
                         <Button variant="contained" onClick={() => {
-
+                            
                             const worksheet = XLSX.utils.json_to_sheet(sPatientService.pagedData.Data);
                             const workbook = XLSX.utils.book_new();
                             XLSX.utils.book_append_sheet(workbook, worksheet, "patient");

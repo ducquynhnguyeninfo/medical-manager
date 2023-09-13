@@ -3,6 +3,7 @@ import { BaseEntitySharePointItem } from "./BaseEntitySharePointItem";
 import { Moment } from "moment";
 
 export class MedicineReportItemViewModel extends BaseEntitySharePointItem {
+    oder: string | undefined;
     Code: string | undefined;
     MedicineTitle: string | undefined;
     UsageDescription: string | undefined;
