@@ -44,9 +44,9 @@ export class MedicineReportItemViewModel {
             ExportNumber: observable,
             EndingInventory: observable,
             Note: observable,
-        })
+        });
 
-        this.Order = order,
+        this.Order = order;
         this.MedicineTitle = MedicineTitle;
         this.Code = Code;
         this.UsageDescription = UsageDescription;
